@@ -284,6 +284,7 @@
                 // Reload table in edit mode
                 if (dataTable) {
                     dataTable.destroy();
+                    $('#vocabularyTable').empty(); // Clear table
                     renderTable();
                 }
             } else {
@@ -310,6 +311,7 @@
             // Reload table in view mode
             if (dataTable) {
                 dataTable.destroy();
+                $('#vocabularyTable').empty(); // Clear table
                 renderTable();
             }
         }

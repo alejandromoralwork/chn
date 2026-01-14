@@ -286,6 +286,7 @@
                 // Reload table in edit mode
                 if (dataTable) {
                     dataTable.destroy();
+                    $('#hanziTable').empty(); // Clear table
                     renderTable();
                 }
             } else {
@@ -312,6 +313,7 @@
             // Reload table in view mode
             if (dataTable) {
                 dataTable.destroy();
+                $('#hanziTable').empty(); // Clear table
                 renderTable();
             }
         }
