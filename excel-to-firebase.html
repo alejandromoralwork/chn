@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel to Firebase Converter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">Excel to Firebase JSON Converter</h1>
+        
+        <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Upload Excel File (.xlsx)</label>
+            <input type="file" id="fileInput" accept=".xlsx,.xls" 
+                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
+        </div>
+
+        <div class="mb-4">
+            <button id="convertBtn" disabled
+                    class="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 text-white font-bold py-2 px-6 rounded">
+                Convert to JSON
+            </button>
+        </div>
+
+        <div id="output" class="hidden">
+            <h2 class="text-xl font-semibold mb-3 text-gray-700">Preview (First 5 Rows)</h2>
+            <div id="preview" class="overflow-x-auto mb-4 max-h-96 overflow-y-auto border rounded"></div>
+            
+            <h2 class="text-xl font-semibold mb-3 text-gray-700">JSON Data</h2>
+            <p class="text-sm text-gray-600 mb-2">Total rows: <span id="rowCount" class="font-bold">0</span></p>
+            <textarea id="jsonOutput" readonly
+                      class="w-full h-64 p-4 border rounded font-mono text-sm bg-gray-50"></textarea>
+            
+            <div class="mt-4 space-x-2">
+                <button id="copyBtn"
+                        class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                    Copy JSON
+                </button>
+                <button id="downloadBtn"
+                        class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
+                    Download JSON
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-8 p-4 bg-blue-50 rounded">
+            <h3 class="font-semibold text-blue-800 mb-2">Instructions:</h3>
+            <ol class="list-decimal list-inside text-sm text-blue-700 space-y-1">
+                <li>Upload your Excel file (.xlsx)</li>
+                <li>Click "Convert to JSON" to process the file</li>
+                <li>Review the preview to ensure data is correct</li>
+                <li>Copy or download the JSON data</li>
+                <li>Use this JSON to initialize your Firebase database</li>
+            </ol>
+        </div>
+
+        <div class="mt-6 p-4 bg-yellow-50 rounded">
+            <h3 class="font-semibold text-yellow-800 mb-2">Note:</h3>
+            <p class="text-sm text-yellow-700">
+                The converter automatically adds an "id" field and a "comments" field to each row. 
+                The "comments" field starts empty and can be filled in later through the web interface.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let currentData = null;
+        const fileInput = document.getElementById('fileInput');
+        const convertBtn = document.getElementById('convertBtn');
+        const output = document.getElementById('output');
+        const preview = document.getElementById('preview');
+        const jsonOutput = document.getElementById('jsonOutput');
+        const rowCount = document.getElementById('rowCount');
+        const copyBtn = document.getElementById('copyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        fileInput.addEventListener('change', (e) => {
+            convertBtn.disabled = !e.target.files.length;
+        });
+
+        convertBtn.addEventListener('click', () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    // Get first sheet
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+                    
+                    // Sanitize column names (remove Firebase forbidden characters)
+                    function sanitizeKey(key) {
+                        return String(key).replace(/[\.\$\#\[\]\/]/g, '_');
+                    }
+                    
+                    // Add id and comments field, sanitize keys, convert to object
+                    const processedData = {};
+                    jsonData.forEach((row, index) => {
+                        const sanitizedRow = { id: index + 1 };
+                        
+                        // Sanitize all column names
+                        for (let key in row) {
+                            const sanitizedKey = sanitizeKey(key);
+                            sanitizedRow[sanitizedKey] = row[key];
+                        }
+                        
+                        sanitizedRow.comments = '';
+                        processedData[index] = sanitizedRow;
+                    });
+
+                    currentData = processedData;
+                    displayResults(processedData);
+                } catch (error) {
+                    alert('Error processing file: ' + error.message);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        function displayResults(data) {
+            output.classList.remove('hidden');
+            const dataArray = Object.values(data);
+            rowCount.textContent = dataArray.length;
+            
+            // Show preview (first 5 rows)
+            const previewData = dataArray.slice(0, 5);
+            if (previewData.length > 0) {
+                const keys = Object.keys(previewData[0]);
+                let tableHTML = '<table class="min-w-full divide-y divide-gray-200">';
+                
+                // Header
+                tableHTML += '<thead class="bg-gray-50"><tr>';
+                keys.forEach(key => {
+                    tableHTML += `<th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">${key}</th>`;
+                });
+                tableHTML += '</tr></thead>';
+                
+                // Rows
+                tableHTML += '<tbody class="bg-white divide-y divide-gray-200">';
+                previewData.forEach(row => {
+                    tableHTML += '<tr>';
+                    keys.forEach(key => {
+                        const value = row[key] || '';
+                        tableHTML += `<td class="px-4 py-2 text-sm text-gray-900">${value}</td>`;
+                    });
+                    tableHTML += '</tr>';
+                });
+                tableHTML += '</tbody></table>';
+                
+                preview.innerHTML = tableHTML;
+            }
+            
+            // Show JSON
+            jsonOutput.value = JSON.stringify(data, null, 2);
+        }
+
+        copyBtn.addEventListener('click', () => {
+            jsonOutput.select();
+            document.execCommand('copy');
+            
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+            }, 2000);
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            const blob = new Blob([jsonOutput.value], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>
