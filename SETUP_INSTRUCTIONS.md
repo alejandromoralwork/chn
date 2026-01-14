@@ -179,39 +179,24 @@ your-database
 
 ## Part 7: Change Default Password
 
-Both websites use the same default password: **`password`**
+Both websites use the same default password: **`hanzi`**
 
 ### To Change the Password:
 
-#### Step 1: Generate New Hash
-1. Open your browser console (F12 → Console tab)
-2. Run this code with your desired password:
+1. Open `hanzi.html` in a text editor
+2. Find this line (around line 117):
 ```javascript
-async function generateHash(password) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hash = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hash));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    console.log('Your password hash:', hashHex);
-}
-
-// Replace 'mynewpassword' with your desired password
-generateHash('mynewpassword');
+const PASSWORD = "hanzi";
 ```
+3. Change `"hanzi"` to your desired password
+4. Save the file
 
-#### Step 2: Update HTML Files
-1. Copy the generated hash
-2. In both `hanzi.html` and `vocabulary.html`, find this line:
-```javascript
-const PASSWORD_HASH = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8";
-```
-3. Replace the hash value with your new hash
-4. Save both files
+5. Open `vocabulary.html` in a text editor
+6. Find the same line (around line 126)
+7. Change `"hanzi"` to the same password
+8. Save the file
 
-**Example hashes:**
-- `password` → `5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8`
-- `chinese123` → `8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92`
+⚠️ **Security Warning**: The password is stored in plain text in the HTML files. Anyone can view the source code and see it. This is only suitable for personal use where convenience is more important than security.
 
 ---
 
@@ -393,8 +378,7 @@ function exportData() {
 ## Quick Reference
 
 ### Default Password
-- **Password**: `password`
-- **Hash**: `5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8`
+- **Password**: `hanzi` (stored in plain text in HTML files)
 
 ### Firebase Paths
 - **Hanzi data**: `/hanzi`

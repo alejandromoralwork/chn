@@ -114,8 +114,8 @@
         measurementId: "G-2R227M02SE"
         };
 
-        // Simple password hash (SHA-256) - Change this password!
-        const PASSWORD_HASH = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"; // "password"
+        // Password - Change this to your desired password
+        const PASSWORD = "hanzi";
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -147,20 +147,11 @@
         const displayedCount = document.getElementById('displayedCount');
         const pendingCount = document.getElementById('pendingCount');
 
-        // SHA-256 Hash Function
-        async function sha256(message) {
-            const msgBuffer = new TextEncoder().encode(message);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        }
-
         // Login Handler
-        loginBtn.addEventListener('click', async () => {
+        loginBtn.addEventListener('click', () => {
             const password = passwordInput.value;
-            const hash = await sha256(password);
             
-            if (hash === PASSWORD_HASH) {
+            if (password === PASSWORD) {
                 isAuthenticated = true;
                 loginModal.classList.add('hidden');
                 logoutBtn.classList.remove('hidden');
