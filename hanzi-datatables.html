@@ -354,22 +354,42 @@
             if (pendingChanges.size === 0) return;
             
             const updates = {};
+            const localUpdates = [];
+            
             pendingChanges.forEach(({ rowId, field, value }) => {
                 const index = allData.findIndex(r => r.id === rowId);
                 if (index !== -1) {
                     updates[`${index}/${field}`] = value;
+                    localUpdates.push({ index, field, value });
                 }
             });
             
+            const saveBtn = document.getElementById('saveAllBtn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+            
             dataRef.update(updates)
                 .then(() => {
-                    alert('All changes saved successfully!');
+                    // Update local data
+                    localUpdates.forEach(({ index, field, value }) => {
+                        allData[index][field] = value;
+                    });
+                    
+                    // Clear changed styling
+                    document.querySelectorAll('.editable-input.changed').forEach(input => {
+                        input.classList.remove('changed');
+                    });
+                    
                     pendingChanges.clear();
                     updatePendingCount();
-                    loadData();
+                    saveBtn.textContent = '💾 Save All (0)';
+                    
+                    alert('✓ All changes saved successfully to Firebase!');
                 })
                 .catch(error => {
-                    alert('Error saving changes: ' + error.message);
+                    alert('✗ Error saving changes: ' + error.message);
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '💾 Save All (<span id="pendingCount">' + pendingChanges.size + '</span>)';
                 });
         }
 
