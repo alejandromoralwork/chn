@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Field Remover</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-primary { background: #2196F3; color: white; }
+        .btn-success { background: #4CAF50; color: white; }
+        .btn-danger { background: #f44336; color: white; }
+        .btn-warning { background: #ff9800; color: white; }
+        
+        button:hover { opacity: 0.9; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        input[type="file"] {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px dashed #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+        
+        .field-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .field-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .field-item input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .field-item.keep {
+            background: #e8f5e9;
+        }
+        
+        .field-item.remove {
+            background: #ffebee;
+        }
+        
+        .stats {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        
+        .stats div {
+            margin: 5px 0;
+        }
+        
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            max-height: 300px;
+            font-size: 12px;
+        }
+        
+        .log {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        
+        .log div {
+            margin: 3px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 JSON Field Remover</h1>
+            <p style="color: #666; margin-top: 5px;">Remove unnecessary fields from your JSON files</p>
+        </div>
+
+        <div class="card">
+            <h2>Step 1: Load JSON File</h2>
+            <input type="file" id="fileInput" accept=".json">
+            <button class="btn-primary" onclick="loadFile()">Load File</button>
+        </div>
+
+        <div class="card" id="fieldsCard" style="display: none;">
+            <h2>Step 2: Select Fields to Remove</h2>
+            <div style="margin: 15px 0;">
+                <button class="btn-warning" onclick="toggleAllFields(false)">Uncheck All</button>
+                <button class="btn-warning" onclick="toggleAllFields(true)">Check All</button>
+                <button class="btn-danger" onclick="removeUselessFields()">Auto-Remove Useless Fields</button>
+            </div>
+            
+            <div class="stats" id="statsDiv"></div>
+            
+            <h3>Fields (uncheck to remove):</h3>
+            <div class="field-list" id="fieldList"></div>
+            
+            <h3 style="margin-top: 20px;">Preview (first record):</h3>
+            <pre id="preview"></pre>
+        </div>
+
+        <div class="card" id="processCard" style="display: none;">
+            <h2>Step 3: Process & Download</h2>
+            <button class="btn-success" onclick="processAndDownload()">Process & Download Cleaned JSON</button>
+            <div class="log" id="log"></div>
+        </div>
+    </div>
+
+    <script>
+        let jsonData = null;
+        let fileName = '';
+        let allFields = [];
+        let selectedFields = new Set();
+
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `<div>[${time}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function loadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file first');
+                return;
+            }
+            
+            fileName = file.name.replace('.json', '');
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    jsonData = JSON.parse(e.target.result);
+                    analyzeFields();
+                    document.getElementById('fieldsCard').style.display = 'block';
+                    document.getElementById('processCard').style.display = 'block';
+                    log('File loaded successfully: ' + fileName);
+                } catch (error) {
+                    alert('Error parsing JSON: ' + error.message);
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+
+        function analyzeFields() {
+            const firstKey = Object.keys(jsonData)[0];
+            const firstRecord = jsonData[firstKey];
+            
+            allFields = Object.keys(firstRecord);
+            selectedFields = new Set(allFields);
+            
+            displayFields();
+            updatePreview();
+            updateStats();
+        }
+
+        function displayFields() {
+            const fieldList = document.getElementById('fieldList');
+            fieldList.innerHTML = '';
+            
+            allFields.forEach(field => {
+                const div = document.createElement('div');
+                div.className = 'field-item';
+                div.id = 'field-' + field.replace(/\s/g, '_');
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = selectedFields.has(field);
+                checkbox.onchange = function() {
+                    if (this.checked) {
+                        selectedFields.add(field);
+                    } else {
+                        selectedFields.delete(field);
+                    }
+                    updateFieldClass(field);
+                    updatePreview();
+                    updateStats();
+                };
+                
+                const label = document.createElement('label');
+                label.textContent = field;
+                label.style.cursor = 'pointer';
+                label.onclick = function() { checkbox.click(); };
+                
+                div.appendChild(checkbox);
+                div.appendChild(label);
+                fieldList.appendChild(div);
+                
+                updateFieldClass(field);
+            });
+        }
+
+        function updateFieldClass(field) {
+            const div = document.getElementById('field-' + field.replace(/\s/g, '_'));
+            if (selectedFields.has(field)) {
+                div.classList.remove('remove');
+                div.classList.add('keep');
+            } else {
+                div.classList.remove('keep');
+                div.classList.add('remove');
+            }
+        }
+
+        function toggleAllFields(checked) {
+            allFields.forEach(field => {
+                if (checked) {
+                    selectedFields.add(field);
+                } else {
+                    selectedFields.delete(field);
+                }
+            });
+            displayFields();
+            updatePreview();
+            updateStats();
+        }
+
+        function removeUselessFields() {
+            // Auto-detect and remove likely useless fields
+            const uselessPatterns = [
+                'Orig Order', 'RTH _', 'RSH _', 'Opt RTH', 'Opt RSH',
+                'RTH Merge Lesson', 'RSH Lesson Merged',
+                'SH and TH check', 'SH and TH keywords'
+            ];
+            
+            // Keep these essential fields
+            const keepFields = [
+                'id', 'comments', 'TH', 'SH', 'Vocab',
+                'RTH Keyword', 'RSH Keyword', 'RTH Read', 'TH Read',
+                'SH Freq Meaning', 'SH Freq Pinyin', 'SH Freq', 'SH Freq Rank', 'SH Freq Group',
+                'RTH Lesson', 'RSH Lesson',
+                'Rank', 'Freq Group', 'RSH Opt Order', 'RSH Hanzi', 'RSH_'
+            ];
+            
+            selectedFields.clear();
+            
+            allFields.forEach(field => {
+                // Keep if in keepFields
+                if (keepFields.includes(field)) {
+                    selectedFields.add(field);
+                }
+                // Remove if matches useless pattern
+                else if (uselessPatterns.some(pattern => field.includes(pattern))) {
+                    // Don't add to selectedFields (remove it)
+                } 
+                // Otherwise keep by default
+                else {
+                    selectedFields.add(field);
+                }
+            });
+            
+            displayFields();
+            updatePreview();
+            updateStats();
+            log('Auto-removed useless fields');
+        }
+
+        function updatePreview() {
+            const firstKey = Object.keys(jsonData)[0];
+            const firstRecord = jsonData[firstKey];
+            
+            const cleanedRecord = {};
+            selectedFields.forEach(field => {
+                cleanedRecord[field] = firstRecord[field];
+            });
+            
+            document.getElementById('preview').textContent = JSON.stringify(cleanedRecord, null, 2);
+        }
+
+        function updateStats() {
+            const totalRecords = Object.keys(jsonData).length;
+            const originalFields = allFields.length;
+            const keptFields = selectedFields.size;
+            const removedFields = originalFields - keptFields;
+            const reductionPercent = ((removedFields / originalFields) * 100).toFixed(1);
+            
+            document.getElementById('statsDiv').innerHTML = `
+                <div><strong>Total Records:</strong> ${totalRecords.toLocaleString()}</div>
+                <div><strong>Original Fields:</strong> ${originalFields}</div>
+                <div><strong>Fields to Keep:</strong> ${keptFields}</div>
+                <div><strong>Fields to Remove:</strong> ${removedFields} (${reductionPercent}% reduction)</div>
+            `;
+        }
+
+        function processAndDownload() {
+            if (!jsonData) {
+                alert('Please load a file first');
+                return;
+            }
+            
+            log('Starting processing...');
+            const startTime = Date.now();
+            
+            const cleanedData = {};
+            const keys = Object.keys(jsonData);
+            
+            keys.forEach((key, index) => {
+                const record = jsonData[key];
+                const cleanedRecord = {};
+                
+                selectedFields.forEach(field => {
+                    cleanedRecord[field] = record[field];
+                });
+                
+                cleanedData[key] = cleanedRecord;
+                
+                if ((index + 1) % 1000 === 0) {
+                    log(`Processed ${index + 1} / ${keys.length} records...`);
+                }
+            });
+            
+            const processingTime = ((Date.now() - startTime) / 1000).toFixed(2);
+            log(`Processing complete in ${processingTime}s`);
+            
+            // Download
+            const jsonString = JSON.stringify(cleanedData, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName + '-cleaned.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            const originalSize = (new Blob([JSON.stringify(jsonData)]).size / 1024 / 1024).toFixed(2);
+            const newSize = (blob.size / 1024 / 1024).toFixed(2);
+            const savings = ((1 - blob.size / new Blob([JSON.stringify(jsonData)]).size) * 100).toFixed(1);
+            
+            log(`✓ Download started: ${fileName}-cleaned.json`);
+            log(`Original size: ${originalSize} MB`);
+            log(`New size: ${newSize} MB`);
+            log(`Space saved: ${savings}%`);
+        }
+    </script>
+</body>
+</html>
