@@ -238,9 +238,15 @@
                 if (data) {
                     allData = Array.isArray(data) ? data : Object.values(data);
                     
+                    // Debug: Check first row data
+                    console.log('First row from Firebase:', allData[0]);
+                    console.log('TH value:', allData[0]?.TH);
+                    console.log('SH value:', allData[0]?.SH);
+                    
                     // Get column keys from first item
                     if (allData.length > 0) {
                         columnKeys = Object.keys(allData[0]).filter(key => key !== 'id');
+                        console.log('Column keys:', columnKeys);
                     }
                     
                     filteredData = [...allData];
