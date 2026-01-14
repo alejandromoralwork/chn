@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>31k Vocabulary - Practice</title>
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "微软雅黑", "SimSun", "宋体", sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .controls {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .btn-primary { background: #2196F3; color: white; }
+        .btn-success { background: #4CAF50; color: white; }
+        .btn-danger { background: #f44336; color: white; }
+        
+        button:hover { opacity: 0.9; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+        
+        /* DataTables customization */
+        table.dataTable {
+            width: 100% !important;
+            font-size: 13px;
+        }
+        
+        table.dataTable thead th {
+            background: #f5f5f5;
+            font-weight: 600;
+            padding: 12px 8px;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        table.dataTable tbody td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table.dataTable tbody tr:hover {
+            background: #f9f9f9;
+        }
+        
+        /* Editable inputs */
+        .editable-input {
+            width: 100%;
+            border: 1px solid #ddd;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+        
+        .editable-input:focus {
+            outline: none;
+            border-color: #2196F3;
+        }
+        
+        .editable-input.changed {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+        
+        .comments-col {
+            color: #1976d2;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .modal-content h2 {
+            margin-bottom: 10px;
+        }
+        
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .error {
+            color: #f44336;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .error.active {
+            display: block;
+        }
+        
+        .stats {
+            background: white;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            font-size: 14px;
+        }
+        
+        .stat-item strong {
+            color: #2196F3;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal active">
+        <div class="modal-content">
+            <h2>🔒 Login Required</h2>
+            <p>Enter password to edit the table</p>
+            <input type="password" id="passwordInput" placeholder="Enter password">
+            <button onclick="checkLogin()" class="btn-primary" style="width: 100%;">Login</button>
+            <p id="loginError" class="error">Incorrect password</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📖 31k Vocabulary Practice</h1>
+            <p style="color: #666; margin-top: 5px;">Your personal Chinese vocabulary study tool</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button id="refreshBtn" class="btn-success" onclick="loadData()">🔄 Refresh</button>
+            <button id="saveAllBtn" class="btn-primary" onclick="saveAllChanges()" disabled style="display: none;">
+                💾 Save All (<span id="pendingCount">0</span>)
+            </button>
+            <div style="flex: 1;"></div>
+            <button id="logoutBtn" class="btn-danger" onclick="logout()" style="display: none;">Logout</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-item">Total Records: <strong id="totalCount">0</strong></div>
+            <div class="stat-item">With Comments: <strong id="commentedCount">0</strong></div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <table id="vocabularyTable" class="display" style="width: 100%;"></table>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const dataRef = database.ref('vocabulary');
+
+        // Password
+        const PASSWORD = "hanzi";
+
+        // State
+        let isAuthenticated = false;
+        let allData = [];
+        let dataTable = null;
+        let pendingChanges = new Map();
+
+        // Login
+        function checkLogin() {
+            const password = document.getElementById('passwordInput').value;
+            const loginError = document.getElementById('loginError');
+            
+            if (password === PASSWORD) {
+                isAuthenticated = true;
+                document.getElementById('loginModal').classList.remove('active');
+                document.getElementById('logoutBtn').style.display = 'block';
+                document.getElementById('saveAllBtn').style.display = 'block';
+                loginError.classList.remove('active');
+                
+                // Reload table in edit mode
+                if (dataTable) {
+                    dataTable.destroy();
+                    renderTable();
+                }
+            } else {
+                loginError.classList.add('active');
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        // Logout
+        function logout() {
+            if (pendingChanges.size > 0) {
+                if (!confirm('You have unsaved changes. Are you sure you want to logout?')) {
+                    return;
+                }
+            }
+            
+            isAuthenticated = false;
+            pendingChanges.clear();
+            document.getElementById('loginModal').classList.add('active');
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.getElementById('saveAllBtn').style.display = 'none';
+            document.getElementById('passwordInput').value = '';
+            
+            // Reload table in view mode
+            if (dataTable) {
+                dataTable.destroy();
+                renderTable();
+            }
+        }
+
+        // Handle input changes
+        function handleInputChange(rowId, field, value) {
+            const key = `${rowId}_${field}`;
+            const original = allData.find(r => r.id === rowId);
+            
+            if (original && original[field] !== value) {
+                pendingChanges.set(key, { rowId, field, value });
+                event.target.classList.add('changed');
+            } else {
+                pendingChanges.delete(key);
+                event.target.classList.remove('changed');
+            }
+            
+            updatePendingCount();
+        }
+
+        // Update pending count
+        function updatePendingCount() {
+            const count = pendingChanges.size;
+            document.getElementById('pendingCount').textContent = count;
+            document.getElementById('saveAllBtn').disabled = count === 0;
+        }
+
+        // Save all changes
+        function saveAllChanges() {
+            if (pendingChanges.size === 0) return;
+            
+            const updates = {};
+            pendingChanges.forEach(({ rowId, field, value }) => {
+                const index = allData.findIndex(r => r.id === rowId);
+                if (index !== -1) {
+                    updates[`${index}/${field}`] = value;
+                }
+            });
+            
+            dataRef.update(updates)
+                .then(() => {
+                    alert('All changes saved successfully!');
+                    pendingChanges.clear();
+                    updatePendingCount();
+                    loadData();
+                })
+                .catch(error => {
+                    alert('Error saving changes: ' + error.message);
+                });
+        }
+
+        // Load data from Firebase
+        function loadData() {
+            dataRef.once('value').then((snapshot) => {
+                const data = snapshot.val();
+                
+                if (data) {
+                    allData = Array.isArray(data) ? data : Object.values(data);
+                    console.log('Data loaded:', allData.length, 'records');
+                    console.log('First row:', allData[0]);
+                    
+                    renderTable();
+                    updateStats();
+                } else {
+                    alert('No data found in Firebase. Please import your data first.');
+                }
+            }).catch(error => {
+                console.error('Error loading data:', error);
+                alert('Error loading data: ' + error.message);
+            });
+        }
+
+        // Render table with DataTables
+        function renderTable() {
+            if (allData.length === 0) return;
+            
+            // Get columns from first row
+            const firstRow = allData[0];
+            const columnKeys = Object.keys(firstRow).filter(k => k !== 'id');
+            
+            // Prepare columns for DataTables
+            const columns = columnKeys.map(key => ({
+                title: key,
+                data: key,
+                render: function(data, type, row) {
+                    const value = data || '';
+                    const isComments = key.toLowerCase() === 'comments';
+                    
+                    if (isAuthenticated) {
+                        const inputClass = isComments ? 'editable-input comments-col' : 'editable-input';
+                        return `<input type="text" class="${inputClass}" value="${escapeHtml(value)}" 
+                                onchange="handleInputChange(${row.id}, '${key}', this.value)" />`;
+                    } else {
+                        const cellClass = isComments ? 'comments-col' : '';
+                        return `<span class="${cellClass}">${escapeHtml(value)}</span>`;
+                    }
+                }
+            }));
+            
+            // Destroy existing table
+            if (dataTable) {
+                dataTable.destroy();
+            }
+            
+            // Initialize DataTable
+            dataTable = $('#vocabularyTable').DataTable({
+                data: allData,
+                columns: columns,
+                pageLength: 100,
+                lengthMenu: [[50, 100, 200, 500, -1], [50, 100, 200, 500, "All"]],
+                scrollX: true,
+                scrollCollapse: true,
+                autoWidth: false,
+                order: [[0, 'asc']],
+                language: {
+                    search: "Search:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "No entries available",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                }
+            });
+        }
+
+        // Update stats
+        function updateStats() {
+            const total = allData.length;
+            const commented = allData.filter(row => row.comments && row.comments.trim()).length;
+            
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('commentedCount').textContent = commented;
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Enter key for login
+        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkLogin();
+        });
+
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>

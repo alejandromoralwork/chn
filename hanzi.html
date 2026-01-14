@@ -7,12 +7,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    
     <style>
         body, input, td, th {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "微软雅黑", "SimSun", "宋体", sans-serif;
         }
         input {
             font-size: 14px !important;
+        }
+        .dataTables_wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+        #hanziTable {
+            width: 100% !important;
+        }
+        .comments-col {
+            color: #1976d2;
         }
     </style>
 </head>
