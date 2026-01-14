@@ -112,16 +112,15 @@
         </div>
 
         <!-- Table Container -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-800 sticky top-0">
-                        <tr id="tableHeader">
-                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">ID</th>
-                            <!-- Dynamic headers will be inserted here -->
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
+        <div style="background: white; overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead style="background: #333; color: white; position: sticky; top: 0; z-index: 10;">
+                    <tr id="tableHeader">
+                        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">ID</th>
+                        <!-- Dynamic headers will be inserted here -->
+                    </tr>
+                </thead>
+                <tbody id="tableBody" style="background: white;">
                         <!-- Data rows will be inserted here -->
                     </tbody>
                 </table>
@@ -290,49 +289,63 @@
                 return;
             }
 
-            // Render headers
-            let headerHTML = '<th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">ID</th>';
-            columnKeys.forEach(key => {
-                headerHTML += `<th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">${key}</th>`;
-            });
-            tableHeader.innerHTML = headerHTML;
+            // Render headers (only once if not changed)
+            if (!tableHeader.hasAttribute('data-rendered')) {
+                let headerHTML = '<th style="padding: 8px; text-align: left; border: 1px solid #ddd;">ID</th>';
+                columnKeys.forEach(key => {
+                    headerHTML += `<th style="padding: 8px; text-align: left; border: 1px solid #ddd;">${key}</th>`;
+                });
+                tableHeader.innerHTML = headerHTML;
+                tableHeader.setAttribute('data-rendered', 'true');
+            }
 
-            // Render rows
-            let rowsHTML = '';
+            // Render rows with minimal styling
+            const fragment = document.createDocumentFragment();
             paginatedData.forEach((row, index) => {
                 const rowId = row.id || index;
-                rowsHTML += `<tr class="hover:bg-gray-50 ${pendingChanges.has(rowId) ? 'bg-yellow-50' : ''}">`;
-                rowsHTML += `<td class="px-4 py-3 text-sm font-medium text-gray-900">${rowId}</td>`;
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid #eee';
+                if (pendingChanges.has(rowId)) tr.style.background = '#fff9c4';
                 
+                // ID column
+                const tdId = document.createElement('td');
+                tdId.style.padding = '6px';
+                tdId.style.border = '1px solid #ddd';
+                tdId.textContent = rowId;
+                tr.appendChild(tdId);
+                
+                // Data columns
                 columnKeys.forEach(key => {
+                    const td = document.createElement('td');
+                    td.style.padding = '6px';
+                    td.style.border = '1px solid #ddd';
                     const value = row[key] || '';
                     const isComments = key.toLowerCase() === 'comments';
-                    const cellClass = isComments ? 'text-blue-600' : 'text-gray-900';
                     
                     if (isAuthenticated) {
-                        rowsHTML += `<td class="px-4 py-3 text-sm ${cellClass}">
-                            <input type="text" 
-                                   value="${escapeHtml(value)}" 
-                                   data-row-id="${rowId}" 
-                                   data-field="${key}"
-                                   class="w-full px-2 py-1 border rounded focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white"
-                                   />
-                        </td>`;
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = value;
+                        input.setAttribute('data-row-id', rowId);
+                        input.setAttribute('data-field', key);
+                        input.style.width = '100%';
+                        input.style.border = '1px solid #ccc';
+                        input.style.padding = '4px';
+                        if (isComments) input.style.color = '#1976d2';
+                        input.addEventListener('input', handleCellEdit);
+                        td.appendChild(input);
                     } else {
-                        rowsHTML += `<td class="px-4 py-3 text-sm ${cellClass}">${escapeHtml(value)}</td>`;
+                        td.textContent = value;
+                        if (isComments) td.style.color = '#1976d2';
                     }
+                    tr.appendChild(td);
                 });
                 
-                rowsHTML += '</tr>';
+                fragment.appendChild(tr);
             });
-            tableBody.innerHTML = rowsHTML;
-
-            // Add input listeners if authenticated
-            if (isAuthenticated) {
-                tableBody.querySelectorAll('input').forEach(input => {
-                    input.addEventListener('input', handleCellEdit);
-                });
-            }
+            
+            tableBody.innerHTML = '';
+            tableBody.appendChild(fragment);
 
             updatePaginationControls();
         }
@@ -476,25 +489,15 @@
 
         // Enable/Disable Editing
         function enableEditing() {
+            tableHeader.removeAttribute('data-rendered');
             renderTable();
         }
 
         function disableEditing() {
             pendingChanges.clear();
             saveAllBtn.disabled = true;
+            tableHeader.removeAttribute('data-rendered');
             renderTable();
-        }
-
-        // Utility: Escape HTML
-        function escapeHtml(text) {
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
-            return String(text).replace(/[&<>"']/g, m => map[m]);
         }
 
         // Initialize
