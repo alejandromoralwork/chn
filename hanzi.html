@@ -56,7 +56,7 @@
             </div>
 
             <!-- Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
                 <div class="bg-blue-50 rounded-lg p-4">
                     <p class="text-blue-600 text-sm font-semibold">Total Characters</p>
                     <p id="totalCount" class="text-2xl font-bold text-blue-700">0</p>
@@ -72,6 +72,41 @@
                 <div class="bg-purple-50 rounded-lg p-4">
                     <p class="text-purple-600 text-sm font-semibold">Pending Saves</p>
                     <p id="pendingCount" class="text-2xl font-bold text-purple-700">0</p>
+                </div>
+                <div class="bg-pink-50 rounded-lg p-4">
+                    <p class="text-pink-600 text-sm font-semibold">Current Page</p>
+                    <p id="pageInfo" class="text-2xl font-bold text-pink-700">1</p>
+                </div>
+            </div>
+
+            <!-- Pagination Controls -->
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+                <div class="flex items-center gap-2">
+                    <label class="text-sm font-medium text-gray-700">Rows per page:</label>
+                    <select id="rowsPerPage" class="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="50">50</option>
+                        <option value="100" selected>100</option>
+                        <option value="200">200</option>
+                        <option value="500">500</option>
+                        <option value="-1">All</option>
+                    </select>
+                </div>
+                <div class="flex gap-2">
+                    <button id="firstPageBtn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium">
+                        ⏮️ First
+                    </button>
+                    <button id="prevPageBtn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium">
+                        ◀️ Prev
+                    </button>
+                    <span class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium" id="pageIndicator">
+                        Page 1 of 1
+                    </span>
+                    <button id="nextPageBtn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium">
+                        Next ▶️
+                    </button>
+                    <button id="lastPageBtn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium">
+                        Last ⏭️
+                    </button>
                 </div>
             </div>
         </div>
@@ -125,6 +160,8 @@
         // State
         let allData = [];
         let filteredData = [];
+        let currentPage = 1;
+        let rowsPerPageValue = 100;
         let isAuthenticated = false;
         let pendingChanges = new Map();
         let columnKeys = [];
@@ -146,6 +183,13 @@
         const commentedCount = document.getElementById('commentedCount');
         const displayedCount = document.getElementById('displayedCount');
         const pendingCount = document.getElementById('pendingCount');
+        const pageInfo = document.getElementById('pageInfo');
+        const rowsPerPage = document.getElementById('rowsPerPage');
+        const pageIndicator = document.getElementById('pageIndicator');
+        const firstPageBtn = document.getElementById('firstPageBtn');
+        const prevPageBtn = document.getElementById('prevPageBtn');
+        const nextPageBtn = document.getElementById('nextPageBtn');
+        const lastPageBtn = document.getElementById('lastPageBtn');
 
         // Login Handler
         loginBtn.addEventListener('click', () => {
@@ -207,10 +251,42 @@
             });
         }
 
+        // Get Paginated Data
+        function getPaginatedData() {
+            if (rowsPerPageValue === -1) {
+                return filteredData;
+            }
+            
+            const start = (currentPage - 1) * rowsPerPageValue;
+            const end = start + rowsPerPageValue;
+            return filteredData.slice(start, end);
+        }
+
+        // Get Total Pages
+        function getTotalPages() {
+            if (rowsPerPageValue === -1) return 1;
+            return Math.ceil(filteredData.length / rowsPerPageValue);
+        }
+
+        // Update Pagination Controls
+        function updatePaginationControls() {
+            const totalPages = getTotalPages();
+            pageIndicator.textContent = `Page ${currentPage} of ${totalPages}`;
+            pageInfo.textContent = currentPage;
+            
+            firstPageBtn.disabled = currentPage === 1;
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage === totalPages;
+            lastPageBtn.disabled = currentPage === totalPages;
+        }
+
         // Render Table
         function renderTable() {
-            if (filteredData.length === 0) {
+            const paginatedData = getPaginatedData();
+            
+            if (paginatedData.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="100" class="text-center py-8 text-gray-500">No matching data</td></tr>';
+                updatePaginationControls();
                 return;
             }
 
@@ -223,7 +299,7 @@
 
             // Render rows
             let rowsHTML = '';
-            filteredData.forEach((row, index) => {
+            paginatedData.forEach((row, index) => {
                 const rowId = row.id || index;
                 rowsHTML += `<tr class="hover:bg-gray-50 ${pendingChanges.has(rowId) ? 'bg-yellow-50' : ''}">`;
                 rowsHTML += `<td class="px-4 py-3 text-sm font-medium text-gray-900">${rowId}</td>`;
@@ -257,7 +333,41 @@
                     input.addEventListener('input', handleCellEdit);
                 });
             }
+
+            updatePaginationControls();
         }
+
+        // Pagination Event Listeners
+        rowsPerPage.addEventListener('change', (e) => {
+            rowsPerPageValue = parseInt(e.target.value);
+            currentPage = 1;
+            renderTable();
+            updateStats();
+        });
+
+        firstPageBtn.addEventListener('click', () => {
+            currentPage = 1;
+            renderTable();
+        });
+
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            if (currentPage < getTotalPages()) {
+                currentPage++;
+                renderTable();
+            }
+        });
+
+        lastPageBtn.addEventListener('click', () => {
+            currentPage = getTotalPages();
+            renderTable();
+        });
 
         // Handle Cell Edit
         function handleCellEdit(e) {
@@ -339,6 +449,7 @@
                 });
             }
             
+            currentPage = 1;
             renderTable();
             updateStats();
         });
