@@ -199,13 +199,14 @@
     </style>
 </head>
 <body>
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal active">
+    <!-- Password Modal for Saving -->
+    <div id="loginModal" class="modal">
         <div class="modal-content">
-            <h2>🔒 Login Required</h2>
-            <p>Enter password to edit the table</p>
+            <h2>🔒 Enter Password to Save</h2>
+            <p>Enter password to save changes to Firebase</p>
             <input type="password" id="passwordInput" placeholder="Enter password">
-            <button onclick="checkLogin()" class="btn-primary" style="width: 100%;">Login</button>
+            <button onclick="confirmSave()" class="btn-primary" style="width: 100%;">Save Changes</button>
+            <button onclick="cancelSave()" class="btn-danger" style="width: 100%; margin-top: 10px;">Cancel</button>
             <p id="loginError" class="error">Incorrect password</p>
         </div>
     </div>
@@ -220,11 +221,9 @@
         <!-- Controls -->
         <div class="controls">
             <button id="refreshBtn" class="btn-success" onclick="loadData()">🔄 Refresh</button>
-            <button id="saveAllBtn" class="btn-primary" onclick="saveAllChanges()" disabled style="display: none;">
+            <button id="saveAllBtn" class="btn-primary" onclick="showPasswordModal()" disabled>
                 💾 Save All (<span id="pendingCount">0</span>)
             </button>
-            <div style="flex: 1;"></div>
-            <button id="logoutBtn" class="btn-danger" onclick="logout()" style="display: none;">Logout</button>
         </div>
 
         <!-- Stats -->
@@ -264,63 +263,38 @@
         const PASSWORD = "hanzi";
 
         // State
-        let isAuthenticated = false;
         let allData = [];
         let dataTable = null;
         let pendingChanges = new Map();
+        let pendingSaveData = null;
 
-        // Login
-        function checkLogin() {
+        // Show password modal for saving
+        function showPasswordModal() {
+            if (pendingChanges.size === 0) return;
+            
+            document.getElementById('loginModal').classList.add('active');
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').classList.remove('active');
+        }
+
+        // Cancel save
+        function cancelSave() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('passwordInput').value = '';
+        }
+
+        // Confirm save with password
+        function confirmSave() {
             const password = document.getElementById('passwordInput').value;
             const loginError = document.getElementById('loginError');
             
             if (password === PASSWORD) {
-                isAuthenticated = true;
                 document.getElementById('loginModal').classList.remove('active');
-                document.getElementById('logoutBtn').style.display = 'block';
-                document.getElementById('saveAllBtn').style.display = 'block';
                 loginError.classList.remove('active');
-                
-                // Reload table in edit mode
-                if (dataTable) {
-                    const currentPage = dataTable.page();
-                    dataTable.destroy();
-                    renderTable();
-                    // Restore page position
-                    if (dataTable) {
-                        dataTable.page(currentPage).draw('page');
-                    }
-                }
+                saveAllChanges();
             } else {
                 loginError.classList.add('active');
                 document.getElementById('passwordInput').value = '';
-            }
-        }
-
-        // Logout
-        function logout() {
-            if (pendingChanges.size > 0) {
-                if (!confirm('You have unsaved changes. Are you sure you want to logout?')) {
-                    return;
-                }
-            }
-            
-            isAuthenticated = false;
-            pendingChanges.clear();
-            document.getElementById('loginModal').classList.add('active');
-            document.getElementById('logoutBtn').style.display = 'none';
-            document.getElementById('saveAllBtn').style.display = 'none';
-            document.getElementById('passwordInput').value = '';
-            
-            // Reload table in view mode
-            if (dataTable) {
-                const currentPage = dataTable.page();
-                dataTable.destroy();
-                renderTable();
-                // Restore page position
-                if (dataTable) {
-                    dataTable.page(currentPage).draw('page');
-                }
             }
         }
 
@@ -427,15 +401,9 @@
                 render: function(data, type, row) {
                     const value = data || '';
                     const isComments = key.toLowerCase() === 'comments';
-                    
-                    if (isAuthenticated) {
-                        const inputClass = isComments ? 'editable-input comments-col' : 'editable-input';
-                        return `<input type="text" class="${inputClass}" value="${escapeHtml(value)}" 
-                                onchange="handleInputChange(${row.id}, '${key}', this.value)" />`;
-                    } else {
-                        const cellClass = isComments ? 'comments-col' : '';
-                        return `<span class="${cellClass}">${escapeHtml(value)}</span>`;
-                    }
+                    const inputClass = isComments ? 'editable-input comments-col' : 'editable-input';
+                    return `<input type="text" class="${inputClass}" value="${escapeHtml(value)}" 
+                            onchange="handleInputChange(${row.id}, '${key}', this.value)" />`;
                 }
             }));
             
