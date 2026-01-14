@@ -283,9 +283,13 @@
                 
                 // Reload table in edit mode
                 if (dataTable) {
+                    const currentPage = dataTable.page();
                     dataTable.destroy();
-                    $('#vocabularyTable').empty(); // Clear table
                     renderTable();
+                    // Restore page position
+                    if (dataTable) {
+                        dataTable.page(currentPage).draw('page');
+                    }
                 }
             } else {
                 loginError.classList.add('active');
@@ -310,9 +314,13 @@
             
             // Reload table in view mode
             if (dataTable) {
+                const currentPage = dataTable.page();
                 dataTable.destroy();
-                $('#vocabularyTable').empty(); // Clear table
                 renderTable();
+                // Restore page position
+                if (dataTable) {
+                    dataTable.page(currentPage).draw('page');
+                }
             }
         }
 
