@@ -1,0 +1,1979 @@
+{
+  "0": {
+    "id": 1,
+    "number": 1,
+    "radical": "ä¸",
+    "pinyin": "yi1",
+    "english": "one",
+    "strokecount": 1,
+    "comments": ""
+  },
+  "1": {
+    "id": 2,
+    "number": 2,
+    "radical": "ä¸¨",
+    "pinyin": "gun3",
+    "english": "line",
+    "strokecount": 1,
+    "comments": ""
+  },
+  "2": {
+    "id": 3,
+    "number": 4,
+    "radical": "ä¸¿",
+    "variants": "ä¹Â (fu2),Â ä¹(yi2)",
+    "pinyin": "pie3",
+    "english": "slash",
+    "strokecount": 1,
+    "comments": ""
+  },
+  "3": {
+    "id": 4,
+    "number": 5,
+    "radical": "ä¹",
+    "variants": "ä¹Â (yin3),Â ä¹",
+    "pinyin": "yi4",
+    "english": "second",
+    "strokecount": 1,
+    "comments": ""
+  },
+  "4": {
+    "id": 5,
+    "number": 6,
+    "radical": "äº",
+    "pinyin": "jue2",
+    "english": "hook",
+    "strokecount": 1,
+    "comments": ""
+  },
+  "5": {
+    "id": 6,
+    "number": 3,
+    "radical": "ä¸¶",
+    "pinyin": "zhu3",
+    "english": "dot",
+    "strokecount": 1,
+    "comments": ""
+  },
+  "6": {
+    "id": 7,
+    "number": 7,
+    "radical": "äº",
+    "pinyin": "er4",
+    "english": "two",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "7": {
+    "id": 8,
+    "number": 8,
+    "radical": "äº ",
+    "pinyin": "tou2",
+    "english": "lid",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "8": {
+    "id": 9,
+    "number": 9,
+    "radical": "äºº",
+    "variants": "äº»",
+    "pinyin": "ren2",
+    "english": "man",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "9": {
+    "id": 10,
+    "number": 10,
+    "radical": "å¿",
+    "pinyin": "er2",
+    "english": "legs",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "10": {
+    "id": 11,
+    "number": 11,
+    "radical": "å¥",
+    "pinyin": "ru4",
+    "english": "enter",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "11": {
+    "id": 12,
+    "number": 12,
+    "radical": "å«",
+    "variants": "ä¸·",
+    "pinyin": "ba1",
+    "english": "eight",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "12": {
+    "id": 13,
+    "number": 13,
+    "radical": "å",
+    "pinyin": "jiong3",
+    "english": "down box",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "13": {
+    "id": 14,
+    "number": 14,
+    "radical": "å",
+    "pinyin": "mi4",
+    "english": "over",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "14": {
+    "id": 15,
+    "number": 15,
+    "radical": "å«",
+    "pinyin": "bing1",
+    "english": "ice",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "15": {
+    "id": 16,
+    "number": 16,
+    "radical": "å ",
+    "pinyin": "ji1",
+    "english": "table",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "16": {
+    "id": 17,
+    "number": 17,
+    "radical": "åµ",
+    "pinyin": "qu3",
+    "english": "open box",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "17": {
+    "id": 18,
+    "number": 18,
+    "radical": "å",
+    "variants": "å",
+    "pinyin": "dao1",
+    "english": "knife",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "18": {
+    "id": 19,
+    "number": 19,
+    "radical": "å",
+    "pinyin": "li4",
+    "english": "power",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "19": {
+    "id": 20,
+    "number": 20,
+    "radical": "å¹",
+    "pinyin": "bao1",
+    "english": "wrap",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "20": {
+    "id": 21,
+    "number": 21,
+    "radical": "å",
+    "pinyin": "bi3",
+    "english": "spoon",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "21": {
+    "id": 22,
+    "number": 22,
+    "radical": "å",
+    "pinyin": "fang1",
+    "english": "right open box",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "22": {
+    "id": 23,
+    "number": 23,
+    "radical": "å¸",
+    "pinyin": "xi3",
+    "english": "hiding encloÂ­sure",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "23": {
+    "id": 24,
+    "number": 24,
+    "radical": "å",
+    "pinyin": "shi2",
+    "english": "ten",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "24": {
+    "id": 25,
+    "number": 25,
+    "radical": "å",
+    "pinyin": "bu3",
+    "english": "mystiÂ­cism",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "25": {
+    "id": 26,
+    "number": 26,
+    "radical": "å©",
+    "pinyin": "jie2",
+    "english": "seal",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "26": {
+    "id": 27,
+    "number": 27,
+    "radical": "å",
+    "pinyin": "han4",
+    "english": "cliff",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "27": {
+    "id": 28,
+    "number": 28,
+    "radical": "å¶",
+    "pinyin": "si1",
+    "english": "private",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "28": {
+    "id": 29,
+    "number": 29,
+    "radical": "å",
+    "pinyin": "you4",
+    "english": "again",
+    "strokecount": 2,
+    "comments": ""
+  },
+  "29": {
+    "id": 30,
+    "number": 31,
+    "radical": "å",
+    "pinyin": "wei2",
+    "english": "encloÂ­sure",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "30": {
+    "id": 31,
+    "number": 32,
+    "radical": "å",
+    "pinyin": "tu3",
+    "english": "earth",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "31": {
+    "id": 32,
+    "number": 33,
+    "radical": "å£«",
+    "pinyin": "shi4",
+    "english": "scholar",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "32": {
+    "id": 33,
+    "number": 34,
+    "radical": "å¤",
+    "pinyin": "zhi3 (top)",
+    "english": "go",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "33": {
+    "id": 34,
+    "number": 35,
+    "radical": "å¤",
+    "pinyin": "sui1 (botÂ­tom)",
+    "english": "go slowly",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "34": {
+    "id": 35,
+    "number": 36,
+    "radical": "å¤",
+    "pinyin": "xi1",
+    "english": "evening",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "35": {
+    "id": 36,
+    "number": 37,
+    "radical": "å¤§",
+    "pinyin": "da4",
+    "english": "big",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "36": {
+    "id": 37,
+    "number": 38,
+    "radical": "å¥³",
+    "pinyin": "nÃ¼3",
+    "english": "woman",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "37": {
+    "id": 38,
+    "number": 39,
+    "radical": "å­",
+    "pinyin": "zi3",
+    "english": "child",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "38": {
+    "id": 39,
+    "number": 40,
+    "radical": "å®",
+    "pinyin": "mian2",
+    "english": "roof",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "39": {
+    "id": 40,
+    "number": 41,
+    "radical": "å¯¸",
+    "pinyin": "cun4",
+    "english": "inch",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "40": {
+    "id": 41,
+    "number": 42,
+    "radical": "å°",
+    "pinyin": "xiao3",
+    "english": "small",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "41": {
+    "id": 42,
+    "number": 43,
+    "radical": "å°¢",
+    "variants": "å°£",
+    "pinyin": "wang1",
+    "english": "lame",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "42": {
+    "id": 43,
+    "number": 44,
+    "radical": "å°¸",
+    "pinyin": "shi1",
+    "english": "corpse",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "43": {
+    "id": 44,
+    "number": 45,
+    "radical": "å±®",
+    "pinyin": "che4",
+    "english": "sprout",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "44": {
+    "id": 45,
+    "number": 46,
+    "radical": "å±±",
+    "pinyin": "shan1",
+    "english": "mounÂ­tain",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "45": {
+    "id": 46,
+    "number": 47,
+    "radical": "å·",
+    "variants": "å·,Â å·Â (gui4)",
+    "pinyin": "chuan1",
+    "english": "river",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "46": {
+    "id": 47,
+    "number": 48,
+    "radical": "å·¥",
+    "pinyin": "gong1",
+    "english": "work",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "47": {
+    "id": 48,
+    "number": 49,
+    "radical": "å·±",
+    "pinyin": "ji3",
+    "english": "oneself",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "48": {
+    "id": 49,
+    "number": 50,
+    "radical": "å·¾",
+    "pinyin": "jin1",
+    "english": "turban",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "49": {
+    "id": 50,
+    "number": 51,
+    "radical": "å¹²",
+    "pinyin": "gan1",
+    "english": "dry",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "50": {
+    "id": 51,
+    "number": 52,
+    "radical": "å¹º",
+    "pinyin": "yao1",
+    "english": "short thread",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "51": {
+    "id": 52,
+    "number": 30,
+    "radical": "å£",
+    "pinyin": "kou3",
+    "english": "mouth",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "52": {
+    "id": 53,
+    "number": 53,
+    "radical": "å¹¿",
+    "pinyin": "guan3",
+    "english": "dotted cliff",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "53": {
+    "id": 54,
+    "number": 54,
+    "radical": "å»´",
+    "pinyin": "yin3",
+    "english": "long stride",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "54": {
+    "id": 55,
+    "number": 55,
+    "radical": "å»¾",
+    "pinyin": "gong3",
+    "english": "two hands",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "55": {
+    "id": 56,
+    "number": 56,
+    "radical": "å¼",
+    "pinyin": "yi4",
+    "english": "shoot",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "56": {
+    "id": 57,
+    "number": 57,
+    "radical": "å¼",
+    "pinyin": "gong1",
+    "english": "bow",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "57": {
+    "id": 58,
+    "number": 58,
+    "radical": "å½",
+    "variants": "å½",
+    "pinyin": "ji4",
+    "english": "snout",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "58": {
+    "id": 59,
+    "number": 59,
+    "radical": "å½¡",
+    "pinyin": "shan1",
+    "english": "bristle",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "59": {
+    "id": 60,
+    "number": 60,
+    "radical": "å½³",
+    "pinyin": "chi4",
+    "english": "step",
+    "strokecount": 3,
+    "comments": ""
+  },
+  "60": {
+    "id": 61,
+    "number": 61,
+    "radical": "å¿",
+    "variants": "å¿",
+    "pinyin": "xin1",
+    "english": "heart",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "61": {
+    "id": 62,
+    "number": 62,
+    "radical": "æ",
+    "pinyin": "ge1",
+    "english": "halberd",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "62": {
+    "id": 63,
+    "number": 63,
+    "radical": "æ¶",
+    "pinyin": "hu4",
+    "english": "door",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "63": {
+    "id": 64,
+    "number": 64,
+    "radical": "æ",
+    "variants": "æ",
+    "pinyin": "shou3",
+    "english": "hand",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "64": {
+    "id": 65,
+    "number": 65,
+    "radical": "æ¯",
+    "pinyin": "zhi1",
+    "english": "branch",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "65": {
+    "id": 66,
+    "number": 66,
+    "radical": "æ´",
+    "variants": "æµ",
+    "pinyin": "pu1",
+    "english": "rap",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "66": {
+    "id": 67,
+    "number": 67,
+    "radical": "æ",
+    "pinyin": "wen2",
+    "english": "script",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "67": {
+    "id": 68,
+    "number": 68,
+    "radical": "æ",
+    "pinyin": "dou3",
+    "english": "dipper",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "68": {
+    "id": 69,
+    "number": 69,
+    "radical": "æ¤",
+    "pinyin": "jin1",
+    "english": "axe",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "69": {
+    "id": 70,
+    "number": 70,
+    "radical": "æ¹",
+    "pinyin": "fang1",
+    "english": "square",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "70": {
+    "id": 71,
+    "number": 71,
+    "radical": "æ ",
+    "pinyin": "wu2",
+    "english": "not",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "71": {
+    "id": 72,
+    "number": 72,
+    "radical": "æ¥",
+    "pinyin": "ri4",
+    "english": "sun",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "72": {
+    "id": 73,
+    "number": 73,
+    "radical": "æ°",
+    "pinyin": "yue1",
+    "english": "say",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "73": {
+    "id": 74,
+    "number": 74,
+    "radical": "æ",
+    "pinyin": "yue4",
+    "english": "moon",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "74": {
+    "id": 75,
+    "number": 75,
+    "radical": "æ¨",
+    "pinyin": "mu4",
+    "english": "tree",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "75": {
+    "id": 76,
+    "number": 76,
+    "radical": "æ¬ ",
+    "pinyin": "qian4",
+    "english": "lack",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "76": {
+    "id": 77,
+    "number": 77,
+    "radical": "æ­¢",
+    "pinyin": "zhi3",
+    "english": "stop",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "77": {
+    "id": 78,
+    "number": 79,
+    "radical": "æ®³",
+    "pinyin": "shu1",
+    "english": "weapon",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "78": {
+    "id": 79,
+    "number": 80,
+    "radical": "æ¯",
+    "pinyin": "wu2",
+    "english": "do not",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "79": {
+    "id": 80,
+    "number": 81,
+    "radical": "æ¯",
+    "pinyin": "bi3",
+    "english": "compare",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "80": {
+    "id": 81,
+    "number": 82,
+    "radical": "æ¯",
+    "pinyin": "mao2",
+    "english": "fur",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "81": {
+    "id": 82,
+    "number": 83,
+    "radical": "æ°",
+    "pinyin": "shi4",
+    "english": "clan",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "82": {
+    "id": 83,
+    "number": 84,
+    "radical": "æ°",
+    "pinyin": "qi4",
+    "english": "steam",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "83": {
+    "id": 84,
+    "number": 85,
+    "radical": "æ°´",
+    "variants": "æ°µ",
+    "pinyin": "shui3",
+    "english": "water",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "84": {
+    "id": 85,
+    "number": 86,
+    "radical": "ç«",
+    "variants": "ç¬",
+    "pinyin": "huo3",
+    "english": "fire",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "85": {
+    "id": 86,
+    "number": 87,
+    "radical": "çª",
+    "variants": "ç«",
+    "pinyin": "zhao3",
+    "english": "claw",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "86": {
+    "id": 87,
+    "number": 88,
+    "radical": "ç¶",
+    "pinyin": "fu4",
+    "english": "father",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "87": {
+    "id": 88,
+    "number": 89,
+    "radical": "ç»",
+    "pinyin": "yao2",
+    "english": "double x",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "88": {
+    "id": 89,
+    "number": 90,
+    "radical": "ç¿",
+    "variants": "ä¸¬",
+    "pinyin": "pan2, qiang2",
+    "english": "half tree trunk",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "89": {
+    "id": 90,
+    "number": 91,
+    "radical": "ç",
+    "pinyin": "pian4",
+    "english": "slice",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "90": {
+    "id": 91,
+    "number": 92,
+    "radical": "ç",
+    "pinyin": "ya2",
+    "english": "fang",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "91": {
+    "id": 92,
+    "number": 93,
+    "radical": "ç",
+    "variants": "ç",
+    "pinyin": "niu2",
+    "english": "cow",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "92": {
+    "id": 93,
+    "number": 94,
+    "radical": "ç¬",
+    "variants": "ç­",
+    "pinyin": "quan3",
+    "english": "dog",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "93": {
+    "id": 94,
+    "number": 78,
+    "radical": "æ­¹",
+    "pinyin": "dai3",
+    "english": "death",
+    "strokecount": 4,
+    "comments": ""
+  },
+  "94": {
+    "id": 95,
+    "number": 95,
+    "radical": "ç",
+    "pinyin": "xuan2",
+    "english": "proÂ­found",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "95": {
+    "id": 96,
+    "number": 96,
+    "radical": "ç",
+    "variants": "ç",
+    "pinyin": "yu4",
+    "english": "jade",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "96": {
+    "id": 97,
+    "number": 97,
+    "radical": "ç",
+    "pinyin": "gua1",
+    "english": "melon",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "97": {
+    "id": 98,
+    "number": 98,
+    "radical": "ç¦",
+    "pinyin": "wa3",
+    "english": "tile",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "98": {
+    "id": 99,
+    "number": 99,
+    "radical": "ç",
+    "pinyin": "gan1",
+    "english": "sweet",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "99": {
+    "id": 100,
+    "number": 100,
+    "radical": "ç",
+    "pinyin": "sheng1",
+    "english": "life",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "100": {
+    "id": 101,
+    "number": 101,
+    "radical": "ç¨",
+    "pinyin": "yong4",
+    "english": "use",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "101": {
+    "id": 102,
+    "number": 102,
+    "radical": "ç°",
+    "pinyin": "tian2",
+    "english": "field",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "102": {
+    "id": 103,
+    "number": 103,
+    "radical": "ç",
+    "pinyin": "pi3",
+    "english": "bolt of cloth",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "103": {
+    "id": 104,
+    "number": 104,
+    "radical": "ç",
+    "pinyin": "chuang2",
+    "english": "sickÂ­ness",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "104": {
+    "id": 105,
+    "number": 105,
+    "radical": "ç¶",
+    "pinyin": "bo4",
+    "english": "dotted tent",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "105": {
+    "id": 106,
+    "number": 106,
+    "radical": "ç½",
+    "pinyin": "bai2",
+    "english": "white",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "106": {
+    "id": 107,
+    "number": 107,
+    "radical": "ç®",
+    "pinyin": "pi2",
+    "english": "skin",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "107": {
+    "id": 108,
+    "number": 108,
+    "radical": "ç¿",
+    "pinyin": "min3",
+    "english": "dish",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "108": {
+    "id": 109,
+    "number": 109,
+    "radical": "ç®",
+    "pinyin": "mu4",
+    "english": "eye",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "109": {
+    "id": 110,
+    "number": 110,
+    "radical": "ç",
+    "pinyin": "mao2",
+    "english": "spear",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "110": {
+    "id": 111,
+    "number": 111,
+    "radical": "ç¢",
+    "pinyin": "shi3",
+    "english": "arrow",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "111": {
+    "id": 112,
+    "number": 112,
+    "radical": "ç³",
+    "pinyin": "shi2",
+    "english": "stone",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "112": {
+    "id": 113,
+    "number": 113,
+    "radical": "ç¤º",
+    "variants": "ç¤»",
+    "pinyin": "shi4",
+    "english": "spirit",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "113": {
+    "id": 114,
+    "number": 114,
+    "radical": "ç¦¸",
+    "pinyin": "rou3",
+    "english": "track",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "114": {
+    "id": 115,
+    "number": 115,
+    "radical": "ç¦¾",
+    "pinyin": "he2",
+    "english": "grain",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "115": {
+    "id": 116,
+    "number": 116,
+    "radical": "ç©´",
+    "pinyin": "xue4",
+    "english": "cave",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "116": {
+    "id": 117,
+    "number": 117,
+    "radical": "ç«",
+    "pinyin": "li4",
+    "english": "stand",
+    "strokecount": 5,
+    "comments": ""
+  },
+  "117": {
+    "id": 118,
+    "number": 133,
+    "radical": "è³",
+    "pinyin": "zhi4",
+    "english": "arrive",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "118": {
+    "id": 119,
+    "number": 118,
+    "radical": "ç«¹",
+    "variants": "âº®",
+    "pinyin": "zhu2",
+    "english": "bamboo",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "119": {
+    "id": 120,
+    "number": 121,
+    "radical": "ç¼¶",
+    "pinyin": "fou3",
+    "english": "jar",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "120": {
+    "id": 121,
+    "number": 122,
+    "radical": "ç½",
+    "variants": "ç½",
+    "pinyin": "wang3",
+    "english": "net",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "121": {
+    "id": 122,
+    "number": 123,
+    "radical": "ç¾",
+    "pinyin": "yang2",
+    "english": "sheep",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "122": {
+    "id": 123,
+    "number": 124,
+    "radical": "ç¾½",
+    "pinyin": "yu3",
+    "english": "feather",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "123": {
+    "id": 124,
+    "number": 125,
+    "radical": "è",
+    "pinyin": "lao3",
+    "english": "old",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "124": {
+    "id": 125,
+    "number": 126,
+    "radical": "è",
+    "pinyin": "er2",
+    "english": "and",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "125": {
+    "id": 126,
+    "number": 127,
+    "radical": "è",
+    "pinyin": "lei3",
+    "english": "plow",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "126": {
+    "id": 127,
+    "number": 128,
+    "radical": "è³",
+    "pinyin": "er3",
+    "english": "ear",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "127": {
+    "id": 128,
+    "number": 129,
+    "radical": "è¿",
+    "pinyin": "yu4",
+    "english": "brush",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "128": {
+    "id": 129,
+    "number": 130,
+    "radical": "è",
+    "pinyin": "rou4",
+    "english": "meat",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "129": {
+    "id": 130,
+    "number": 131,
+    "radical": "è£",
+    "pinyin": "chen2",
+    "english": "minisÂ­ter",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "130": {
+    "id": 131,
+    "number": 132,
+    "radical": "èª",
+    "pinyin": "zi4",
+    "english": "self",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "131": {
+    "id": 132,
+    "number": 120,
+    "radical": "ç³¸",
+    "simplifiedradical": "çº",
+    "pinyin": "mi4",
+    "english": "silk",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "132": {
+    "id": 133,
+    "number": 134,
+    "radical": "è¼",
+    "pinyin": "jiu4",
+    "english": "mortar",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "133": {
+    "id": 134,
+    "number": 135,
+    "radical": "è",
+    "pinyin": "she2",
+    "english": "tongue",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "134": {
+    "id": 135,
+    "number": 136,
+    "radical": "è",
+    "pinyin": "chuan3",
+    "english": "oppose",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "135": {
+    "id": 136,
+    "number": 137,
+    "radical": "è",
+    "pinyin": "zhou1",
+    "english": "boat",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "136": {
+    "id": 137,
+    "number": 138,
+    "radical": "è®",
+    "pinyin": "gen4",
+    "english": "stopÂ­ping",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "137": {
+    "id": 138,
+    "number": 139,
+    "radical": "è²",
+    "pinyin": "se4",
+    "english": "color",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "138": {
+    "id": 139,
+    "number": 140,
+    "radical": "è¸",
+    "variants": "è¹",
+    "pinyin": "cao3",
+    "english": "grass",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "139": {
+    "id": 140,
+    "number": 141,
+    "radical": "è",
+    "pinyin": "hu1",
+    "english": "tiger",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "140": {
+    "id": 141,
+    "number": 142,
+    "radical": "è«",
+    "pinyin": "chong2",
+    "english": "insect",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "141": {
+    "id": 142,
+    "number": 143,
+    "radical": "è¡",
+    "pinyin": "xue3",
+    "english": "blood",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "142": {
+    "id": 143,
+    "number": 144,
+    "radical": "è¡",
+    "pinyin": "xing2",
+    "english": "walk encloÂ­sure",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "143": {
+    "id": 144,
+    "number": 145,
+    "radical": "è¡£",
+    "variants": "è¡¤",
+    "pinyin": "yi1",
+    "english": "clothes",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "144": {
+    "id": 145,
+    "number": 146,
+    "radical": "è¥¾",
+    "variants": "è¦",
+    "pinyin": "ya4",
+    "english": "west",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "145": {
+    "id": 146,
+    "number": 119,
+    "radical": "ç±³",
+    "pinyin": "mi3",
+    "english": "rice",
+    "strokecount": 6,
+    "comments": ""
+  },
+  "146": {
+    "id": 147,
+    "number": 147,
+    "radical": "è¦",
+    "simplifiedradical": "è§",
+    "pinyin": "jian4",
+    "english": "see",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "147": {
+    "id": 148,
+    "number": 148,
+    "radical": "è§",
+    "pinyin": "jue2",
+    "english": "horn",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "148": {
+    "id": 149,
+    "number": 149,
+    "radical": "è¨",
+    "simplifiedradical": "è® ",
+    "pinyin": "yan2",
+    "english": "speech",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "149": {
+    "id": 150,
+    "number": 150,
+    "radical": "è°·",
+    "pinyin": "gu3",
+    "english": "valley",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "150": {
+    "id": 151,
+    "number": 151,
+    "radical": "è±",
+    "pinyin": "dou4",
+    "english": "bean",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "151": {
+    "id": 152,
+    "number": 152,
+    "radical": "è±",
+    "pinyin": "shi3",
+    "english": "pig",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "152": {
+    "id": 153,
+    "number": 153,
+    "radical": "è±¸",
+    "pinyin": "zhi4",
+    "english": "badger",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "153": {
+    "id": 154,
+    "number": 154,
+    "radical": "è²",
+    "simplifiedradical": "è´",
+    "pinyin": "bei4",
+    "english": "shell",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "154": {
+    "id": 155,
+    "number": 155,
+    "radical": "èµ¤",
+    "pinyin": "chi4",
+    "english": "red",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "155": {
+    "id": 156,
+    "number": 156,
+    "radical": "èµ°",
+    "pinyin": "zou3",
+    "english": "run",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "156": {
+    "id": 157,
+    "number": 157,
+    "radical": "è¶³",
+    "simplifiedradical": "â»",
+    "pinyin": "zu2",
+    "english": "foot",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "157": {
+    "id": 158,
+    "number": 158,
+    "radical": "èº«",
+    "pinyin": "shen1",
+    "english": "body",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "158": {
+    "id": 159,
+    "number": 159,
+    "radical": "è»",
+    "simplifiedradical": "è½¦",
+    "pinyin": "che1",
+    "english": "cart",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "159": {
+    "id": 160,
+    "number": 160,
+    "radical": "è¾",
+    "pinyin": "xin1",
+    "english": "bitter",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "160": {
+    "id": 161,
+    "number": 161,
+    "radical": "è¾°",
+    "pinyin": "chen2",
+    "english": "morning",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "161": {
+    "id": 162,
+    "number": 162,
+    "radical": "è¾µ",
+    "variants": "è¾¶",
+    "pinyin": "chuo4",
+    "english": "walk",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "162": {
+    "id": 163,
+    "number": 163,
+    "radical": "é",
+    "variants": "éÂ (right)",
+    "pinyin": "yi4",
+    "english": "city",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "163": {
+    "id": 164,
+    "number": 164,
+    "radical": "é",
+    "pinyin": "you3",
+    "english": "wine",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "164": {
+    "id": 165,
+    "number": 165,
+    "radical": "é",
+    "pinyin": "bian4",
+    "english": "distinÂ­guish",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "165": {
+    "id": 166,
+    "number": 166,
+    "radical": "é",
+    "pinyin": "li3",
+    "english": "village",
+    "strokecount": 7,
+    "comments": ""
+  },
+  "166": {
+    "id": 167,
+    "number": 167,
+    "radical": "é",
+    "pinyin": "jin1",
+    "english": "gold",
+    "strokecount": 8,
+    "comments": ""
+  },
+  "167": {
+    "id": 168,
+    "number": 168,
+    "radical": "é·",
+    "simplifiedradical": "é¿",
+    "pinyin": "chang2",
+    "english": "long",
+    "strokecount": 8,
+    "comments": ""
+  },
+  "168": {
+    "id": 169,
+    "number": 170,
+    "radical": "é",
+    "variants": "éÂ (left)",
+    "pinyin": "fu4",
+    "english": "mound",
+    "strokecount": 8,
+    "comments": ""
+  },
+  "169": {
+    "id": 170,
+    "number": 171,
+    "radical": "é¶",
+    "pinyin": "dai4",
+    "english": "slave",
+    "strokecount": 8,
+    "comments": ""
+  },
+  "170": {
+    "id": 171,
+    "number": 172,
+    "radical": "é¹",
+    "pinyin": "zhui1",
+    "english": "short tailed bird",
+    "strokecount": 8,
+    "comments": ""
+  },
+  "171": {
+    "id": 172,
+    "number": 173,
+    "radical": "é¨",
+    "pinyin": "yu3",
+    "english": "rain",
+    "strokecount": 8,
+    "comments": ""
+  },
+  "172": {
+    "id": 173,
+    "number": 174,
+    "radical": "é",
+    "pinyin": "qing1",
+    "english": "blue",
+    "strokecount": 8,
+    "comments": ""
+  },
+  "173": {
+    "id": 174,
+    "number": 175,
+    "radical": "é",
+    "pinyin": "fei1",
+    "english": "wrong",
+    "strokecount": 8,
+    "comments": ""
+  },
+  "174": {
+    "id": 175,
+    "number": 169,
+    "radical": "é",
+    "simplifiedradical": "é¨",
+    "pinyin": "men2",
+    "english": "gate",
+    "strokecount": 8,
+    "comments": ""
+  },
+  "175": {
+    "id": 176,
+    "number": 182,
+    "radical": "é¢¨",
+    "simplifiedradical": "é£",
+    "pinyin": "feng1",
+    "english": "wind",
+    "strokecount": 9,
+    "comments": ""
+  },
+  "176": {
+    "id": 177,
+    "number": 177,
+    "radical": "é©",
+    "pinyin": "ge2",
+    "english": "leather",
+    "strokecount": 9,
+    "comments": ""
+  },
+  "177": {
+    "id": 178,
+    "number": 179,
+    "radical": "é­",
+    "pinyin": "jiu3",
+    "english": "leek",
+    "strokecount": 9,
+    "comments": ""
+  },
+  "178": {
+    "id": 179,
+    "number": 180,
+    "radical": "é³",
+    "pinyin": "yin1",
+    "english": "sound",
+    "strokecount": 9,
+    "comments": ""
+  },
+  "179": {
+    "id": 180,
+    "number": 181,
+    "radical": "é ",
+    "simplifiedradical": "é¡µ",
+    "pinyin": "ye4",
+    "english": "leaf",
+    "strokecount": 9,
+    "comments": ""
+  },
+  "180": {
+    "id": 181,
+    "number": 176,
+    "radical": "é¢",
+    "pinyin": "mian4",
+    "english": "face",
+    "strokecount": 9,
+    "comments": ""
+  },
+  "181": {
+    "id": 182,
+    "number": 183,
+    "radical": "é£",
+    "simplifiedradical": "é£",
+    "pinyin": "fei1",
+    "english": "fly",
+    "strokecount": 9,
+    "comments": ""
+  },
+  "182": {
+    "id": 183,
+    "number": 184,
+    "radical": "é£",
+    "variants": "é£ ",
+    "simplifiedradical": "é¥£",
+    "pinyin": "shi2",
+    "english": "eat",
+    "strokecount": 9,
+    "comments": ""
+  },
+  "183": {
+    "id": 184,
+    "number": 185,
+    "radical": "é¦",
+    "pinyin": "shou3",
+    "english": "head",
+    "strokecount": 9,
+    "comments": ""
+  },
+  "184": {
+    "id": 185,
+    "number": 186,
+    "radical": "é¦",
+    "pinyin": "xiang1",
+    "english": "fragrant",
+    "strokecount": 9,
+    "comments": ""
+  },
+  "185": {
+    "id": 186,
+    "number": 178,
+    "radical": "é",
+    "simplifiedradical": "é¦",
+    "pinyin": "wei2",
+    "english": "tanned leather",
+    "strokecount": 9,
+    "comments": ""
+  },
+  "186": {
+    "id": 187,
+    "number": 187,
+    "radical": "é¦¬",
+    "simplifiedradical": "é©¬",
+    "pinyin": "ma3",
+    "english": "horse",
+    "strokecount": 10,
+    "comments": ""
+  },
+  "187": {
+    "id": 188,
+    "number": 188,
+    "radical": "éª¨",
+    "pinyin": "gu3",
+    "english": "bone",
+    "strokecount": 10,
+    "comments": ""
+  },
+  "188": {
+    "id": 189,
+    "number": 189,
+    "radical": "é«",
+    "pinyin": "gao1",
+    "english": "tall",
+    "strokecount": 10,
+    "comments": ""
+  },
+  "189": {
+    "id": 190,
+    "number": 190,
+    "radical": "é«",
+    "pinyin": "biao1",
+    "english": "hair",
+    "strokecount": 10,
+    "comments": ""
+  },
+  "190": {
+    "id": 191,
+    "number": 191,
+    "radical": "é¬¥",
+    "pinyin": "dou4",
+    "english": "fight",
+    "strokecount": 10,
+    "comments": ""
+  },
+  "191": {
+    "id": 192,
+    "number": 192,
+    "radical": "é¬¯",
+    "pinyin": "chang4",
+    "english": "sacriÂ­ficial wine",
+    "strokecount": 10,
+    "comments": ""
+  },
+  "192": {
+    "id": 193,
+    "number": 193,
+    "radical": "é¬²",
+    "pinyin": "li4",
+    "english": "caulÂ­dron",
+    "strokecount": 10,
+    "comments": ""
+  },
+  "193": {
+    "id": 194,
+    "number": 194,
+    "radical": "é¬¼",
+    "pinyin": "gui3",
+    "english": "ghost",
+    "strokecount": 10,
+    "comments": ""
+  },
+  "194": {
+    "id": 195,
+    "number": 195,
+    "radical": "é­",
+    "simplifiedradical": "é±¼",
+    "pinyin": "yu2",
+    "english": "fish",
+    "strokecount": 11,
+    "comments": ""
+  },
+  "195": {
+    "id": 196,
+    "number": 197,
+    "radical": "é¹µ",
+    "pinyin": "lu3",
+    "english": "salt",
+    "strokecount": 11,
+    "comments": ""
+  },
+  "196": {
+    "id": 197,
+    "number": 198,
+    "radical": "é¹¿",
+    "pinyin": "lu4",
+    "english": "deer",
+    "strokecount": 11,
+    "comments": ""
+  },
+  "197": {
+    "id": 198,
+    "number": 199,
+    "radical": "éº¥",
+    "simplifiedradical": "éº¦",
+    "pinyin": "mai4",
+    "english": "wheat",
+    "strokecount": 11,
+    "comments": ""
+  },
+  "198": {
+    "id": 199,
+    "number": 200,
+    "radical": "éº»",
+    "pinyin": "ma2",
+    "english": "hemp",
+    "strokecount": 11,
+    "comments": ""
+  },
+  "199": {
+    "id": 200,
+    "number": 196,
+    "radical": "é³¥",
+    "simplifiedradical": "é¸",
+    "pinyin": "niao3",
+    "english": "bird",
+    "strokecount": 11,
+    "comments": ""
+  },
+  "200": {
+    "id": 201,
+    "number": 201,
+    "radical": "é»",
+    "pinyin": "huang2",
+    "english": "yellow",
+    "strokecount": 12,
+    "comments": ""
+  },
+  "201": {
+    "id": 202,
+    "number": 202,
+    "radical": "é»",
+    "pinyin": "shu3",
+    "english": "millet",
+    "strokecount": 12,
+    "comments": ""
+  },
+  "202": {
+    "id": 203,
+    "number": 203,
+    "radical": "é»",
+    "pinyin": "hei1",
+    "english": "black",
+    "strokecount": 12,
+    "comments": ""
+  },
+  "203": {
+    "id": 204,
+    "number": 204,
+    "radical": "é»¹",
+    "pinyin": "zhi3",
+    "english": "embroiÂ­dery",
+    "strokecount": 12,
+    "comments": ""
+  },
+  "204": {
+    "id": 205,
+    "number": 205,
+    "radical": "é»½",
+    "simplifiedradical": "é»¾",
+    "pinyin": "min3",
+    "english": "frog",
+    "strokecount": 13,
+    "comments": ""
+  },
+  "205": {
+    "id": 206,
+    "number": 206,
+    "radical": "é¼",
+    "pinyin": "ding3",
+    "english": "tripod",
+    "strokecount": 13,
+    "comments": ""
+  },
+  "206": {
+    "id": 207,
+    "number": 207,
+    "radical": "é¼",
+    "pinyin": "gu3",
+    "english": "drum",
+    "strokecount": 13,
+    "comments": ""
+  },
+  "207": {
+    "id": 208,
+    "number": 208,
+    "radical": "é¼ ",
+    "simplifiedradical": "é¼¡",
+    "pinyin": "shu3",
+    "english": "rat",
+    "strokecount": 13,
+    "comments": ""
+  },
+  "208": {
+    "id": 209,
+    "number": 209,
+    "radical": "é¼»",
+    "pinyin": "bi2",
+    "english": "nose",
+    "strokecount": 14,
+    "comments": ""
+  },
+  "209": {
+    "id": 210,
+    "number": 210,
+    "radical": "é½",
+    "simplifiedradical": "é½",
+    "pinyin": "qi2",
+    "english": "even",
+    "strokecount": 14,
+    "comments": ""
+  },
+  "210": {
+    "id": 211,
+    "number": 211,
+    "radical": "é½",
+    "simplifiedradical": "é½¿",
+    "pinyin": "chi3",
+    "english": "tooth",
+    "strokecount": 15,
+    "comments": ""
+  },
+  "211": {
+    "id": 212,
+    "number": 212,
+    "radical": "é¾",
+    "simplifiedradical": "é¾",
+    "pinyin": "long2",
+    "english": "dragon",
+    "strokecount": 16,
+    "comments": ""
+  },
+  "212": {
+    "id": 213,
+    "number": 213,
+    "radical": "é¾",
+    "simplifiedradical": "é¾",
+    "pinyin": "gui1",
+    "english": "turtle",
+    "strokecount": 16,
+    "comments": ""
+  },
+  "213": {
+    "id": 214,
+    "number": 214,
+    "radical": "é¾ ",
+    "pinyin": "yue4",
+    "english": "flute",
+    "strokecount": 17,
+    "comments": ""
+  }
+}
