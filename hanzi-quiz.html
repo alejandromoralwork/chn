@@ -172,6 +172,9 @@
                 <div class="progress">
                     <div class="progress-bar" id="progressBar" style="width: 0%"></div>
                 </div>
+                <div style="text-align: center; margin: 15px 0; font-size: 18px; font-weight: 600; color: #667eea;">
+                    Current Score: <span id="currentScore">0%</span> (<span id="correctSoFar">0</span> correct out of <span id="answeredSoFar">0</span>)
+                </div>
                 <div class="hanzi-display" id="hanziDisplay">一</div>
                 <div>
                     <label style="display: block; margin-bottom: 10px; font-weight: 600;">Enter the reading (pinyin):</label>
@@ -234,6 +237,15 @@
         let incorrectAnswers = 0;
         let skippedAnswers = 0;
         let currentAnswer = null;
+        
+        function updateCurrentScore() {
+            const totalAnswered = correctAnswers + incorrectAnswers + skippedAnswers;
+            const percentage = totalAnswered > 0 ? Math.round((correctAnswers / totalAnswered) * 100) : 0;
+            document.getElementById(`currentScore`).textContent = percentage + `%`;
+            document.getElementById(`correctSoFar`).textContent = correctAnswers;
+            document.getElementById(`answeredSoFar`).textContent = totalAnswered;
+        }
+        
         dataRef.once(`value`).then((snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -299,11 +311,13 @@
             const answerInfo = document.getElementById(`answerInfo`);
             if (isCorrect) {
                 correctAnswers++;
+                updateCurrentScore();
                 feedback.className = `feedback correct`;
                 feedback.textContent = `Correct!`;
                 feedback.style.display = `block`;
             } else {
                 incorrectAnswers++;
+                updateCurrentScore();
                 feedback.className = `feedback incorrect`;
                 feedback.textContent = `Incorrect`;
                 feedback.style.display = `block`;
@@ -319,6 +333,7 @@
         }
         function skipQuestion() {
             skippedAnswers++;
+            updateCurrentScore();
             const answerInfo = document.getElementById(`answerInfo`);
             const correctReadings = [
                 currentAnswer[`RTH Read`],
