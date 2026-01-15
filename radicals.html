@@ -396,11 +396,27 @@
             const firstRow = allData[0];
             const columnKeys = Object.keys(firstRow);
             
+            // Detect numeric columns by checking if all non-empty values are numbers
+            const isNumericColumn = (key) => {
+                const samples = allData.slice(0, 100).map(row => row[key]).filter(v => v !== '' && v != null);
+                if (samples.length === 0) return false;
+                return samples.every(v => !isNaN(v) && !isNaN(parseFloat(v)));
+            };
+            
             // Prepare columns for DataTables
             const columns = columnKeys.map(key => ({
                 title: key,
                 data: key,
+                type: isNumericColumn(key) ? 'num' : 'string',
                 render: function(data, type, row) {
+                    // For sorting/filtering, return raw numeric value if numeric column
+                    if (type === 'sort' || type === 'type') {
+                        if (isNumericColumn(key) && data !== '' && data != null) {
+                            return parseFloat(data);
+                        }
+                        return data;
+                    }
+                    
                     const value = data || '';
                     const isComments = key.toLowerCase() === 'comments';
                     const isId = key.toLowerCase() === 'id';

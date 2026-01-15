@@ -155,6 +155,19 @@
                     <label style="display: block; margin-bottom: 10px; font-weight: 600;">How many characters do you want to practice?</label>
                     <input type="number" id="quizCount" value="10" min="1" max="3000">
                 </div>
+                <div style="margin: 20px 0;">
+                    <label style="display: block; margin-bottom: 10px; font-weight: 600;">Order:</label>
+                    <div style="display: flex; gap: 15px;">
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="orderType" value="random" checked>
+                            Random
+                        </label>
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="orderType" value="byId">
+                            By ID (Sequential)
+                        </label>
+                    </div>
+                </div>
                 <div class="option-buttons">
                     <button class="btn-primary" onclick="startQuiz(`custom`)">Start Custom Quiz</button>
                     <button class="btn-success" onclick="startQuiz(`all`)">Test All Characters</button>
@@ -265,8 +278,16 @@
                 alert(`Please enter a number between 1 and ` + allData.length);
                 return;
             }
-            const shuffled = [...allData].sort(() => Math.random() - 0.5);
-            quizData = shuffled.slice(0, count);
+            const orderType = document.querySelector(`input[name="orderType"]:checked`).value;
+            let selectedData;
+            if (orderType === `byId`) {
+                const sorted = [...allData].sort((a, b) => (a.id || 0) - (b.id || 0));
+                selectedData = sorted.slice(0, count);
+            } else {
+                const shuffled = [...allData].sort(() => Math.random() - 0.5);
+                selectedData = shuffled.slice(0, count);
+            }
+            quizData = selectedData;
             currentQuestionIndex = 0;
             correctAnswers = 0;
             incorrectAnswers = 0;
