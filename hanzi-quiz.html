@@ -156,6 +156,14 @@
                     <input type="number" id="quizCount" value="10" min="1" max="3000">
                 </div>
                 <div style="margin: 20px 0;">
+                    <label style="display: block; margin-bottom: 10px; font-weight: 600;">Or select an ID range:</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="number" id="rangeFrom" placeholder="From ID" style="width: 120px; padding: 8px; border: 2px solid #ddd; border-radius: 6px;">
+                        <span style="font-weight: 600;">to</span>
+                        <input type="number" id="rangeTo" placeholder="To ID" style="width: 120px; padding: 8px; border: 2px solid #ddd; border-radius: 6px;">
+                    </div>
+                </div>
+                <div style="margin: 20px 0;">
                     <label style="display: block; margin-bottom: 10px; font-weight: 600;">Order:</label>
                     <div style="display: flex; gap: 15px;">
                         <label style="cursor: pointer;">
@@ -170,6 +178,7 @@
                 </div>
                 <div class="option-buttons">
                     <button class="btn-primary" onclick="startQuiz(`custom`)">Start Custom Quiz</button>
+                    <button class="btn-primary" onclick="startQuiz(`range`)">Start Range Quiz</button>
                     <button class="btn-success" onclick="startQuiz(`all`)">Test All Characters</button>
                 </div>
                 <div style="margin-top: 20px; padding: 15px; background: #f5f5f5; border-radius: 6px;">
@@ -273,20 +282,55 @@
             alert(`Error loading data: ` + error.message);
         });
         function startQuiz(mode) {
-            const count = mode === `all` ? allData.length : parseInt(document.getElementById(`quizCount`).value);
-            if (count <= 0 || count > allData.length) {
-                alert(`Please enter a number between 1 and ` + allData.length);
-                return;
-            }
-            const orderType = document.querySelector(`input[name="orderType"]:checked`).value;
             let selectedData;
-            if (orderType === `byId`) {
-                const sorted = [...allData].sort((a, b) => (a.id || 0) - (b.id || 0));
-                selectedData = sorted.slice(0, count);
+            
+            if (mode === `range`) {
+                const rangeFrom = parseInt(document.getElementById(`rangeFrom`).value);
+                const rangeTo = parseInt(document.getElementById(`rangeTo`).value);
+                
+                if (!rangeFrom || !rangeTo) {
+                    alert(`Please enter both From and To ID values`);
+                    return;
+                }
+                
+                if (rangeFrom > rangeTo) {
+                    alert(`From ID must be less than or equal to To ID`);
+                    return;
+                }
+                
+                // Filter by ID range
+                const filtered = allData.filter(item => {
+                    const id = parseInt(item.id || 0);
+                    return id >= rangeFrom && id <= rangeTo;
+                });
+                
+                if (filtered.length === 0) {
+                    alert(`No characters found in ID range ${rangeFrom} to ${rangeTo}`);
+                    return;
+                }
+                
+                const orderType = document.querySelector(`input[name="orderType"]:checked`).value;
+                if (orderType === `byId`) {
+                    selectedData = filtered.sort((a, b) => (a.id || 0) - (b.id || 0));
+                } else {
+                    selectedData = filtered.sort(() => Math.random() - 0.5);
+                }
             } else {
-                const shuffled = [...allData].sort(() => Math.random() - 0.5);
-                selectedData = shuffled.slice(0, count);
+                const count = mode === `all` ? allData.length : parseInt(document.getElementById(`quizCount`).value);
+                if (count <= 0 || count > allData.length) {
+                    alert(`Please enter a number between 1 and ` + allData.length);
+                    return;
+                }
+                const orderType = document.querySelector(`input[name="orderType"]:checked`).value;
+                if (orderType === `byId`) {
+                    const sorted = [...allData].sort((a, b) => (a.id || 0) - (b.id || 0));
+                    selectedData = sorted.slice(0, count);
+                } else {
+                    const shuffled = [...allData].sort(() => Math.random() - 0.5);
+                    selectedData = shuffled.slice(0, count);
+                }
             }
+            
             quizData = selectedData;
             currentQuestionIndex = 0;
             correctAnswers = 0;
