@@ -394,7 +394,7 @@
             
             // Get columns from first row
             const firstRow = allData[0];
-            const columnKeys = Object.keys(firstRow).filter(k => k !== 'id');
+            const columnKeys = Object.keys(firstRow);
             
             // Prepare columns for DataTables
             const columns = columnKeys.map(key => ({
@@ -403,7 +403,14 @@
                 render: function(data, type, row) {
                     const value = data || '';
                     const isComments = key.toLowerCase() === 'comments';
+                    const isId = key.toLowerCase() === 'id';
                     const inputClass = isComments ? 'editable-input comments-col' : 'editable-input';
+                    
+                    // Make id column read-only
+                    if (isId) {
+                        return `<span style="font-weight: bold; color: #666;">${escapeHtml(value)}</span>`;
+                    }
+                    
                     return `<input type="text" class="${inputClass}" value="${escapeHtml(value)}" 
                             onchange="handleInputChange(${row.id}, '${key}', this.value)" />`;
                 }
