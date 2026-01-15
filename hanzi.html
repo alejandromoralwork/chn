@@ -4,164 +4,244 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Optimized Remembering the Hanzi - Practice</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     
-    <!-- DataTables -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    
     <style>
-        body, input, td, th {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "微软雅黑", "SimSun", "宋体", sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
         }
-        input {
-            font-size: 14px !important;
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
         }
-        .dataTables_wrapper {
-            width: 100%;
+        
+        .header {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .controls {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .btn-primary { background: #2196F3; color: white; }
+        .btn-success { background: #4CAF50; color: white; }
+        .btn-danger { background: #f44336; color: white; }
+        
+        button:hover { opacity: 0.9; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             overflow-x: auto;
         }
-        #hanziTable {
+        
+        /* DataTables customization */
+        table.dataTable {
             width: 100% !important;
+            font-size: 13px;
         }
+        
+        table.dataTable thead th {
+            background: #f5f5f5;
+            font-weight: 600;
+            padding: 12px 8px;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        table.dataTable tbody td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table.dataTable tbody tr:hover {
+            background: #f9f9f9;
+        }
+        
+        /* Editable inputs */
+        .editable-input {
+            width: 100%;
+            border: 1px solid #ddd;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+        
+        .editable-input:focus {
+            outline: none;
+            border-color: #2196F3;
+        }
+        
+        .editable-input.changed {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+        
         .comments-col {
             color: #1976d2;
         }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .modal-content h2 {
+            margin-bottom: 10px;
+        }
+        
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .error {
+            color: #f44336;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .error.active {
+            display: block;
+        }
+        
+        .stats {
+            background: white;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            font-size: 14px;
+        }
+        
+        .stat-item strong {
+            color: #2196F3;
+            margin-left: 5px;
+        }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <!-- Login Modal -->
-    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-            <h2 class="text-2xl font-bold mb-4 text-gray-800">🔒 Login Required</h2>
-            <p class="text-gray-600 mb-4">Enter password to edit the table</p>
-            <input type="password" id="passwordInput" placeholder="Enter password"
-                   class="w-full px-4 py-2 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <button id="loginBtn" 
-                    class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
-                Login
-            </button>
-            <p id="loginError" class="text-red-500 text-sm mt-2 hidden">Incorrect password</p>
+<body>
+    <!-- Password Modal for Saving -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2>🔒 Enter Password to Save</h2>
+            <p>Enter password to save changes to Firebase</p>
+            <input type="password" id="passwordInput" placeholder="Enter password">
+            <button onclick="confirmSave()" class="btn-primary" style="width: 100%;">Save Changes</button>
+            <button onclick="cancelSave()" class="btn-danger" style="width: 100%; margin-top: 10px;">Cancel</button>
+            <p id="loginError" class="error">Incorrect password</p>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="container mx-auto px-4 py-8">
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                <div>
-                    <h1 class="text-3xl font-bold text-gray-800 mb-2">📚 Optimized Remembering the Hanzi</h1>
-                    <p class="text-gray-600">Your personal Chinese character study tool</p>
-                </div>
-                <div class="mt-4 md:mt-0">
-                    <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg hidden">
-                        Logout
-                    </button>
-                </div>
-            </div>
-
-            <!-- Controls -->
-            <div class="flex flex-col md:flex-row gap-4 mb-4">
-                <div class="flex-1">
-                    <input type="text" id="searchInput" placeholder="Search characters, meanings, pinyin..."
-                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <button id="saveAllBtn" disabled
-                        class="bg-green-500 hover:bg-green-600 disabled:bg-gray-300 text-white font-bold py-2 px-6 rounded-lg">
-                    💾 Save All Changes
-                </button>
-                <button id="refreshBtn"
-                        class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-6 rounded-lg">
-                    🔄 Refresh
-                </button>
-            </div>
-
-            <!-- Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
-                <div class="bg-blue-50 rounded-lg p-4">
-                    <p class="text-blue-600 text-sm font-semibold">Total Characters</p>
-                    <p id="totalCount" class="text-2xl font-bold text-blue-700">0</p>
-                </div>
-                <div class="bg-green-50 rounded-lg p-4">
-                    <p class="text-green-600 text-sm font-semibold">With Comments</p>
-                    <p id="commentedCount" class="text-2xl font-bold text-green-700">0</p>
-                </div>
-                <div class="bg-yellow-50 rounded-lg p-4">
-                    <p class="text-yellow-600 text-sm font-semibold">Displayed</p>
-                    <p id="displayedCount" class="text-2xl font-bold text-yellow-700">0</p>
-                </div>
-                <div class="bg-purple-50 rounded-lg p-4">
-                    <p class="text-purple-600 text-sm font-semibold">Pending Saves</p>
-                    <p id="pendingCount" class="text-2xl font-bold text-purple-700">0</p>
-                </div>
-                <div class="bg-pink-50 rounded-lg p-4">
-                    <p class="text-pink-600 text-sm font-semibold">Current Page</p>
-                    <p id="pageInfo" class="text-2xl font-bold text-pink-700">1</p>
-                </div>
-            </div>
-
-            <!-- Pagination Controls -->
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
-                <div class="flex items-center gap-2">
-                    <label class="text-sm font-medium text-gray-700">Rows per page:</label>
-                    <select id="rowsPerPage" class="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="50">50</option>
-                        <option value="100" selected>100</option>
-                        <option value="200">200</option>
-                        <option value="500">500</option>
-                        <option value="-1">All</option>
-                    </select>
-                </div>
-                <div class="flex gap-2">
-                    <button id="firstPageBtn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium">
-                        ⏮️ First
-                    </button>
-                    <button id="prevPageBtn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium">
-                        ◀️ Prev
-                    </button>
-                    <span class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium" id="pageIndicator">
-                        Page 1 of 1
-                    </span>
-                    <button id="nextPageBtn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium">
-                        Next ▶️
-                    </button>
-                    <button id="lastPageBtn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium">
-                        Last ⏭️
-                    </button>
-                </div>
-            </div>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📚 Optimized Remembering the Hanzi</h1>
+            <p style="color: #666; margin-top: 5px;">Your personal Chinese character study tool</p>
         </div>
 
-        <!-- Table Container -->
-        <div style="background: white; overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                <thead style="background: #333; color: white; position: sticky; top: 0; z-index: 10;">
-                    <tr id="tableHeader">
-                        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">ID</th>
-                        <!-- Dynamic headers will be inserted here -->
-                    </tr>
-                </thead>
-                <tbody id="tableBody" style="background: white;">
-                        <!-- Data rows will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
-            <div id="loadingMsg" class="text-center py-12">
-                <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-                <p class="mt-4 text-gray-600">Loading data from Firebase...</p>
-            </div>
-            <div id="noDataMsg" class="hidden text-center py-12">
-                <p class="text-gray-600 text-lg">No data found. Please initialize Firebase with your Excel data.</p>
-            </div>
+        <!-- Controls -->
+        <div class="controls">
+            <button id="refreshBtn" class="btn-success" onclick="loadData()">🔄 Refresh</button>
+            <button id="saveAllBtn" class="btn-primary" onclick="showPasswordModal()" disabled>
+                💾 Save All (<span id="pendingCount">0</span>)
+            </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-item">Total Records: <strong id="totalCount">0</strong></div>
+            <div class="stat-item">With Comments: <strong id="commentedCount">0</strong></div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <table id="hanziTable" class="display" style="width: 100%;"></table>
         </div>
     </div>
 
     <script>
-        // Firebase Configuration - REPLACE WITH YOUR CONFIG
-        const firebaseConfig = {
+        // Firebase Configuration
+ 
+         const firebaseConfig = {
         apiKey: "AIzaSyC-kGriQZ02iiVjdbcw0qGIeYGAPQZ5TMw",
         authDomain: "chngit-bb789.firebaseapp.com",
         databaseURL: "https://chngit-bb789-default-rtdb.firebaseio.com",
@@ -172,367 +252,216 @@
         measurementId: "G-2R227M02SE"
         };
 
-        // Password - Change this to your desired password
-        const PASSWORD = "hanzi";
 
+ 
+ 
+ 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const dataRef = database.ref('hanzi');
 
+        // Password
+        const PASSWORD = "hanzi";
+
         // State
         let allData = [];
-        let filteredData = [];
-        let currentPage = 1;
-        let rowsPerPageValue = 100;
-        let isAuthenticated = false;
+        let dataTable = null;
         let pendingChanges = new Map();
-        let columnKeys = [];
+        let pendingSaveData = null;
 
-        // Elements
-        const loginModal = document.getElementById('loginModal');
-        const passwordInput = document.getElementById('passwordInput');
-        const loginBtn = document.getElementById('loginBtn');
-        const loginError = document.getElementById('loginError');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const searchInput = document.getElementById('searchInput');
-        const saveAllBtn = document.getElementById('saveAllBtn');
-        const refreshBtn = document.getElementById('refreshBtn');
-        const tableHeader = document.getElementById('tableHeader');
-        const tableBody = document.getElementById('tableBody');
-        const loadingMsg = document.getElementById('loadingMsg');
-        const noDataMsg = document.getElementById('noDataMsg');
-        const totalCount = document.getElementById('totalCount');
-        const commentedCount = document.getElementById('commentedCount');
-        const displayedCount = document.getElementById('displayedCount');
-        const pendingCount = document.getElementById('pendingCount');
-        const pageInfo = document.getElementById('pageInfo');
-        const rowsPerPage = document.getElementById('rowsPerPage');
-        const pageIndicator = document.getElementById('pageIndicator');
-        const firstPageBtn = document.getElementById('firstPageBtn');
-        const prevPageBtn = document.getElementById('prevPageBtn');
-        const nextPageBtn = document.getElementById('nextPageBtn');
-        const lastPageBtn = document.getElementById('lastPageBtn');
+        // Show password modal for saving
+        function showPasswordModal() {
+            if (pendingChanges.size === 0) return;
+            
+            document.getElementById('loginModal').classList.add('active');
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').classList.remove('active');
+        }
 
-        // Login Handler
-        loginBtn.addEventListener('click', () => {
-            const password = passwordInput.value;
+        // Cancel save
+        function cancelSave() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('passwordInput').value = '';
+        }
+
+        // Confirm save with password
+        function confirmSave() {
+            const password = document.getElementById('passwordInput').value;
+            const loginError = document.getElementById('loginError');
             
             if (password === PASSWORD) {
-                isAuthenticated = true;
-                loginModal.classList.add('hidden');
-                logoutBtn.classList.remove('hidden');
-                loginError.classList.add('hidden');
-                enableEditing();
+                document.getElementById('loginModal').classList.remove('active');
+                loginError.classList.remove('active');
+                saveAllChanges();
             } else {
-                loginError.classList.remove('hidden');
-                passwordInput.value = '';
+                loginError.classList.add('active');
+                document.getElementById('passwordInput').value = '';
             }
-        });
+        }
 
-        passwordInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') loginBtn.click();
-        });
+        // Handle input changes
+        function handleInputChange(rowId, field, value) {
+            const key = `${rowId}_${field}`;
+            const original = allData.find(r => r.id === rowId);
+            
+            if (original && original[field] !== value) {
+                pendingChanges.set(key, { rowId, field, value });
+                event.target.classList.add('changed');
+            } else {
+                pendingChanges.delete(key);
+                event.target.classList.remove('changed');
+            }
+            
+            updatePendingCount();
+        }
 
-        logoutBtn.addEventListener('click', () => {
-            isAuthenticated = false;
-            loginModal.classList.remove('hidden');
-            logoutBtn.classList.add('hidden');
-            passwordInput.value = '';
-            disableEditing();
-        });
+        // Update pending count
+        function updatePendingCount() {
+            const count = pendingChanges.size;
+            document.getElementById('pendingCount').textContent = count;
+            document.getElementById('saveAllBtn').disabled = count === 0;
+        }
 
-        // Load Data from Firebase
+        // Save all changes
+        function saveAllChanges() {
+            if (pendingChanges.size === 0) return;
+            
+            const updates = {};
+            const localUpdates = [];
+            
+            pendingChanges.forEach(({ rowId, field, value }) => {
+                const index = allData.findIndex(r => r.id === rowId);
+                if (index !== -1) {
+                    updates[`${index}/${field}`] = value;
+                    localUpdates.push({ index, field, value });
+                }
+            });
+            
+            const saveBtn = document.getElementById('saveAllBtn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+            
+            dataRef.update(updates)
+                .then(() => {
+                    // Update local data
+                    localUpdates.forEach(({ index, field, value }) => {
+                        allData[index][field] = value;
+                    });
+                    
+                    // Clear changed styling
+                    document.querySelectorAll('.editable-input.changed').forEach(input => {
+                        input.classList.remove('changed');
+                    });
+                    
+                    pendingChanges.clear();
+                    updatePendingCount();
+                    saveBtn.textContent = '💾 Save All (0)';
+                    
+                    alert('✓ All changes saved successfully to Firebase!');
+                })
+                .catch(error => {
+                    alert('✗ Error saving changes: ' + error.message);
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '💾 Save All (<span id="pendingCount">' + pendingChanges.size + '</span>)';
+                });
+        }
+
+        // Load data from Firebase
         function loadData() {
-            loadingMsg.classList.remove('hidden');
-            noDataMsg.classList.add('hidden');
-            tableBody.innerHTML = '';
-
             dataRef.once('value').then((snapshot) => {
                 const data = snapshot.val();
                 
                 if (data) {
                     allData = Array.isArray(data) ? data : Object.values(data);
+                    console.log('Data loaded:', allData.length, 'records');
+                    console.log('First row:', allData[0]);
                     
-                    // Debug: Check first row data
-                    console.log('First row from Firebase:', allData[0]);
-                    console.log('TH value:', allData[0]?.TH);
-                    console.log('SH value:', allData[0]?.SH);
-                    
-                    // Get column keys from first item
-                    if (allData.length > 0) {
-                        columnKeys = Object.keys(allData[0]).filter(key => key !== 'id');
-                        console.log('Column keys:', columnKeys);
-                    }
-                    
-                    filteredData = [...allData];
                     renderTable();
                     updateStats();
-                    loadingMsg.classList.add('hidden');
                 } else {
-                    loadingMsg.classList.add('hidden');
-                    noDataMsg.classList.remove('hidden');
+                    alert('No data found in Firebase. Please import your data first.');
                 }
-            }).catch((error) => {
+            }).catch(error => {
                 console.error('Error loading data:', error);
-                loadingMsg.classList.add('hidden');
-                alert('Error loading data from Firebase. Check console for details.');
+                alert('Error loading data: ' + error.message);
             });
         }
 
-        // Get Paginated Data
-        function getPaginatedData() {
-            if (rowsPerPageValue === -1) {
-                return filteredData;
-            }
-            
-            const start = (currentPage - 1) * rowsPerPageValue;
-            const end = start + rowsPerPageValue;
-            return filteredData.slice(start, end);
-        }
-
-        // Get Total Pages
-        function getTotalPages() {
-            if (rowsPerPageValue === -1) return 1;
-            return Math.ceil(filteredData.length / rowsPerPageValue);
-        }
-
-        // Update Pagination Controls
-        function updatePaginationControls() {
-            const totalPages = getTotalPages();
-            pageIndicator.textContent = `Page ${currentPage} of ${totalPages}`;
-            pageInfo.textContent = currentPage;
-            
-            firstPageBtn.disabled = currentPage === 1;
-            prevPageBtn.disabled = currentPage === 1;
-            nextPageBtn.disabled = currentPage === totalPages;
-            lastPageBtn.disabled = currentPage === totalPages;
-        }
-
-        // Render Table
+        // Render table with DataTables
         function renderTable() {
-            const paginatedData = getPaginatedData();
+            if (allData.length === 0) return;
             
-            if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="100" class="text-center py-8 text-gray-500">No matching data</td></tr>';
-                updatePaginationControls();
-                return;
-            }
-
-            // Render headers (only once if not changed)
-            if (!tableHeader.hasAttribute('data-rendered')) {
-                let headerHTML = '<th style="padding: 8px; text-align: left; border: 1px solid #ddd;">ID</th>';
-                columnKeys.forEach(key => {
-                    headerHTML += `<th style="padding: 8px; text-align: left; border: 1px solid #ddd;">${key}</th>`;
-                });
-                tableHeader.innerHTML = headerHTML;
-                tableHeader.setAttribute('data-rendered', 'true');
-            }
-
-            // Render rows with minimal styling
-            const fragment = document.createDocumentFragment();
-            paginatedData.forEach((row, index) => {
-                const rowId = row.id || index;
-                const tr = document.createElement('tr');
-                tr.style.borderBottom = '1px solid #eee';
-                if (pendingChanges.has(rowId)) tr.style.background = '#fff9c4';
-                
-                // ID column
-                const tdId = document.createElement('td');
-                tdId.style.padding = '6px';
-                tdId.style.border = '1px solid #ddd';
-                tdId.textContent = rowId;
-                tr.appendChild(tdId);
-                
-                // Data columns
-                columnKeys.forEach(key => {
-                    const td = document.createElement('td');
-                    td.style.padding = '6px';
-                    td.style.border = '1px solid #ddd';
-                    td.style.fontSize = '14px';
-                    const value = String(row[key] ?? '').trim();
+            // Get columns from first row
+            const firstRow = allData[0];
+            const columnKeys = Object.keys(firstRow).filter(k => k !== 'id');
+            
+            // Prepare columns for DataTables
+            const columns = columnKeys.map(key => ({
+                title: key,
+                data: key,
+                render: function(data, type, row) {
+                    const value = data || '';
                     const isComments = key.toLowerCase() === 'comments';
-                    
-                    if (isAuthenticated) {
-                        const input = document.createElement('input');
-                        input.type = 'text';
-                        input.value = value;
-                        input.setAttribute('data-row-id', rowId);
-                        input.setAttribute('data-field', key);
-                        input.style.width = '100%';
-                        input.style.border = '1px solid #ccc';
-                        input.style.padding = '4px';
-                        input.style.fontSize = '14px';
-                        if (isComments) input.style.color = '#1976d2';
-                        input.addEventListener('input', handleCellEdit);
-                        td.appendChild(input);
-                    } else {
-                        td.textContent = value;
-                        if (isComments) td.style.color = '#1976d2';
+                    const inputClass = isComments ? 'editable-input comments-col' : 'editable-input';
+                    return `<input type="text" class="${inputClass}" value="${escapeHtml(value)}" 
+                            onchange="handleInputChange(${row.id}, '${key}', this.value)" />`;
+                }
+            }));
+            
+            // Destroy existing table
+            if (dataTable) {
+                dataTable.destroy();
+            }
+            
+            // Initialize DataTable
+            dataTable = $('#hanziTable').DataTable({
+                data: allData,
+                columns: columns,
+                pageLength: 100,
+                lengthMenu: [[50, 100, 200, 500, -1], [50, 100, 200, 500, "All"]],
+                scrollX: true,
+                scrollCollapse: true,
+                autoWidth: false,
+                order: [[0, 'asc']],
+                language: {
+                    search: "Search:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "No entries available",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
                     }
-                    tr.appendChild(td);
-                });
-                
-                fragment.appendChild(tr);
+                }
             });
-            
-            tableBody.innerHTML = '';
-            tableBody.appendChild(fragment);
-
-            updatePaginationControls();
         }
 
-        // Pagination Event Listeners
-        rowsPerPage.addEventListener('change', (e) => {
-            rowsPerPageValue = parseInt(e.target.value);
-            currentPage = 1;
-            renderTable();
-            updateStats();
-        });
-
-        firstPageBtn.addEventListener('click', () => {
-            currentPage = 1;
-            renderTable();
-        });
-
-        prevPageBtn.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                renderTable();
-            }
-        });
-
-        nextPageBtn.addEventListener('click', () => {
-            if (currentPage < getTotalPages()) {
-                currentPage++;
-                renderTable();
-            }
-        });
-
-        lastPageBtn.addEventListener('click', () => {
-            currentPage = getTotalPages();
-            renderTable();
-        });
-
-        // Handle Cell Edit
-        function handleCellEdit(e) {
-            const rowId = parseInt(e.target.dataset.rowId);
-            const field = e.target.dataset.field;
-            const newValue = e.target.value;
-
-            // Find the row in allData
-            const rowIndex = allData.findIndex(r => r.id === rowId);
-            if (rowIndex !== -1) {
-                // Track change
-                if (!pendingChanges.has(rowId)) {
-                    pendingChanges.set(rowId, { ...allData[rowIndex] });
-                }
-                
-                pendingChanges.get(rowId)[field] = newValue;
-                saveAllBtn.disabled = false;
-                updateStats();
-                
-                // Highlight changed row
-                e.target.closest('tr').classList.add('bg-yellow-50');
-            }
-        }
-
-        // Save All Changes
-        saveAllBtn.addEventListener('click', async () => {
-            if (pendingChanges.size === 0) return;
-
-            saveAllBtn.disabled = true;
-            saveAllBtn.textContent = '💾 Saving...';
-
-            try {
-                const updates = {};
-                
-                for (const [rowId, rowData] of pendingChanges) {
-                    const index = allData.findIndex(r => r.id === rowId);
-                    if (index !== -1) {
-                        updates[index] = rowData;
-                        allData[index] = rowData;
-                    }
-                }
-
-                await dataRef.update(updates);
-                
-                pendingChanges.clear();
-                saveAllBtn.textContent = '✅ Saved!';
-                
-                setTimeout(() => {
-                    saveAllBtn.textContent = '💾 Save All Changes';
-                    saveAllBtn.disabled = true;
-                }, 2000);
-
-                // Remove highlights
-                document.querySelectorAll('.bg-yellow-50').forEach(el => {
-                    if (!el.classList.contains('bg-yellow-50')) return;
-                    el.classList.remove('bg-yellow-50');
-                });
-
-                updateStats();
-            } catch (error) {
-                console.error('Error saving:', error);
-                alert('Error saving changes. Check console for details.');
-                saveAllBtn.textContent = '💾 Save All Changes';
-                saveAllBtn.disabled = false;
-            }
-        });
-
-        // Search Handler
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            
-            if (!query) {
-                filteredData = [...allData];
-            } else {
-                filteredData = allData.filter(row => {
-                    return Object.values(row).some(val => 
-                        String(val).toLowerCase().includes(query)
-                    );
-                });
-            }
-            
-            currentPage = 1;
-            renderTable();
-            updateStats();
-        });
-
-        // Refresh Handler
-        refreshBtn.addEventListener('click', () => {
-            if (pendingChanges.size > 0) {
-                if (!confirm('You have unsaved changes. Refreshing will discard them. Continue?')) {
-                    return;
-                }
-            }
-            pendingChanges.clear();
-            saveAllBtn.disabled = true;
-            loadData();
-        });
-
-        // Update Stats
+        // Update stats
         function updateStats() {
-            totalCount.textContent = allData.length;
-            commentedCount.textContent = allData.filter(r => r.comments && r.comments.trim()).length;
-            displayedCount.textContent = filteredData.length;
-            pendingCount.textContent = pendingChanges.size;
+            const total = allData.length;
+            const commented = allData.filter(row => row.comments && row.comments.trim()).length;
+            
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('commentedCount').textContent = commented;
         }
 
-        // Enable/Disable Editing
-        function enableEditing() {
-            tableHeader.removeAttribute('data-rendered');
-            renderTable();
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
-        function disableEditing() {
-            pendingChanges.clear();
-            saveAllBtn.disabled = true;
-            tableHeader.removeAttribute('data-rendered');
-            renderTable();
-        }
+        // Enter key for login
+        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkLogin();
+        });
 
-        // Initialize
+        // Load data on page load
         loadData();
     </script>
 </body>

@@ -1,0 +1,358 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanzi Reading Quiz</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "微软雅黑", "SimSun", "宋体", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card {
+            background: white;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 { color: #667eea; margin-bottom: 10px; font-size: 32px; }
+        .setup-screen, .quiz-screen, .results-screen { display: none; }
+        .setup-screen.active, .quiz-screen.active, .results-screen.active { display: block; }
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        button:hover { transform: translateY(-2px); }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-success { background: #4CAF50; color: white; }
+        .btn-danger { background: #f44336; color: white; }
+        input[type="number"] {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            width: 200px;
+            margin: 10px 0;
+        }
+        input[type="text"] {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 18px;
+            width: 100%;
+            margin: 15px 0;
+        }
+        input:focus { outline: none; border-color: #667eea; }
+        .hanzi-display {
+            font-size: 120px;
+            text-align: center;
+            margin: 40px 0;
+            color: #333;
+            font-weight: bold;
+        }
+        .progress {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background: #667eea;
+            height: 100%;
+            transition: width 0.3s;
+        }
+        .question-number {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .feedback {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .feedback.correct { background: #e8f5e9; color: #2e7d32; }
+        .feedback.incorrect { background: #ffebee; color: #c62828; }
+        .answer-info {
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+            margin: 10px 0;
+        }
+        .score-display { text-align: center; margin: 30px 0; }
+        .score-number {
+            font-size: 80px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .score-label {
+            font-size: 24px;
+            color: #666;
+            margin-top: 10px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            font-size: 18px;
+        }
+        .option-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">Loading Hanzi data...</div>
+    <div class="container" id="mainContent" style="display: none;">
+        <div class="setup-screen active" id="setupScreen">
+            <div class="card">
+                <h1>📚 Hanzi Reading Quiz</h1>
+                <p style="color: #666; margin-bottom: 30px;">Test your knowledge of Chinese character readings</p>
+                <div>
+                    <label style="display: block; margin-bottom: 10px; font-weight: 600;">How many characters do you want to practice?</label>
+                    <input type="number" id="quizCount" value="10" min="1" max="3000">
+                </div>
+                <div class="option-buttons">
+                    <button class="btn-primary" onclick="startQuiz(`custom`)">Start Custom Quiz</button>
+                    <button class="btn-success" onclick="startQuiz(`all`)">Test All Characters</button>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: #f5f5f5; border-radius: 6px;">
+                    <strong>Total available: <span id="totalCount">0</span> characters</strong>
+                </div>
+            </div>
+        </div>
+        <div class="quiz-screen" id="quizScreen">
+            <div class="card">
+                <div class="question-number">
+                    Question <span id="currentQuestion">1</span> of <span id="totalQuestions">10</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+                <div class="hanzi-display" id="hanziDisplay">一</div>
+                <div>
+                    <label style="display: block; margin-bottom: 10px; font-weight: 600;">Enter the reading (pinyin):</label>
+                    <input type="text" id="answerInput" placeholder="Type the reading..." autocomplete="off">
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn-primary" onclick="checkAnswer()">Submit Answer</button>
+                    <button class="btn-danger" onclick="skipQuestion()">Skip</button>
+                </div>
+                <div id="feedback" class="feedback" style="display: none;"></div>
+                <div id="answerInfo" class="answer-info" style="display: none;"></div>
+            </div>
+        </div>
+        <div class="results-screen" id="resultsScreen">
+            <div class="card">
+                <h1>🎉 Quiz Complete!</h1>
+                <div class="score-display">
+                    <div class="score-number" id="scorePercent">0%</div>
+                    <div class="score-label">Score</div>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="correctCount">0</div>
+                        <div class="stat-label">Correct</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="incorrectCount">0</div>
+                        <div class="stat-label">Incorrect</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="skippedCount">0</div>
+                        <div class="stat-label">Skipped</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn-primary" onclick="resetQuiz()">Take Another Quiz</button>
+                    <button class="btn-success" onclick="window.location.href=`hanzi.html`">Study Hanzi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyC-kGriQZ02iiVjdbcw0qGIeYGAPQZ5TMw",
+            authDomain: "chngit-bb789.firebaseapp.com",
+            databaseURL: "https://chngit-bb789-default-rtdb.firebaseio.com",
+            projectId: "chngit-bb789",
+            storageBucket: "chngit-bb789.firebasestorage.app",
+            messagingSenderId: "243263769776",
+            appId: "1:243263769776:web:e65cad158619907abaff75",
+            measurementId: "G-2R227M02SE"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const dataRef = database.ref(`hanzi`);
+        let allData = [];
+        let quizData = [];
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        let incorrectAnswers = 0;
+        let skippedAnswers = 0;
+        let currentAnswer = null;
+        dataRef.once(`value`).then((snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                allData = Array.isArray(data) ? data : Object.values(data);
+                document.getElementById(`totalCount`).textContent = allData.length;
+                document.getElementById(`loading`).style.display = `none`;
+                document.getElementById(`mainContent`).style.display = `block`;
+            } else {
+                alert(`No data found. Please check Firebase setup.`);
+            }
+        }).catch(error => {
+            alert(`Error loading data: ` + error.message);
+        });
+        function startQuiz(mode) {
+            const count = mode === `all` ? allData.length : parseInt(document.getElementById(`quizCount`).value);
+            if (count <= 0 || count > allData.length) {
+                alert(`Please enter a number between 1 and ` + allData.length);
+                return;
+            }
+            const shuffled = [...allData].sort(() => Math.random() - 0.5);
+            quizData = shuffled.slice(0, count);
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            incorrectAnswers = 0;
+            skippedAnswers = 0;
+            document.getElementById(`setupScreen`).classList.remove(`active`);
+            document.getElementById(`quizScreen`).classList.add(`active`);
+            document.getElementById(`totalQuestions`).textContent = quizData.length;
+            showQuestion();
+        }
+        function showQuestion() {
+            if (currentQuestionIndex >= quizData.length) {
+                showResults();
+                return;
+            }
+            const question = quizData[currentQuestionIndex];
+            currentAnswer = question;
+            document.getElementById(`currentQuestion`).textContent = currentQuestionIndex + 1;
+            document.getElementById(`hanziDisplay`).textContent = question.TH || question.SH || `?`;
+            document.getElementById(`answerInput`).value = ``;
+            document.getElementById(`feedback`).style.display = `none`;
+            document.getElementById(`answerInfo`).style.display = `none`;
+            document.getElementById(`answerInput`).focus();
+            const progress = ((currentQuestionIndex) / quizData.length) * 100;
+            document.getElementById(`progressBar`).style.width = progress + `%`;
+        }
+        function checkAnswer() {
+            const userAnswer = document.getElementById(`answerInput`).value.trim().toLowerCase();
+            if (!userAnswer) {
+                alert(`Please enter an answer`);
+                return;
+            }
+            const correctReadings = [
+                currentAnswer[`RTH Read`],
+                currentAnswer[`TH Read`],
+                currentAnswer[`SH Freq Pinyin`]
+            ].filter(r => r).map(r => r.toLowerCase().trim());
+            const isCorrect = correctReadings.some(reading => 
+                reading === userAnswer || 
+                reading.replace(/\d/g, ``) === userAnswer.replace(/\d/g, ``)
+            );
+            const feedback = document.getElementById(`feedback`);
+            const answerInfo = document.getElementById(`answerInfo`);
+            if (isCorrect) {
+                correctAnswers++;
+                feedback.className = `feedback correct`;
+                feedback.textContent = `Correct!`;
+                feedback.style.display = `block`;
+            } else {
+                incorrectAnswers++;
+                feedback.className = `feedback incorrect`;
+                feedback.textContent = `Incorrect`;
+                feedback.style.display = `block`;
+                const correctReading = correctReadings[0] || `N/A`;
+                const meaning = currentAnswer[`RTH Keyword`] || currentAnswer[`SH Freq Meaning`] || `N/A`;
+                answerInfo.innerHTML = `Correct reading: <strong>` + correctReading + `</strong><br>Meaning: <strong>` + meaning + `</strong>`;
+                answerInfo.style.display = `block`;
+            }
+            setTimeout(() => {
+                currentQuestionIndex++;
+                showQuestion();
+            }, isCorrect ? 1000 : 3000);
+        }
+        function skipQuestion() {
+            skippedAnswers++;
+            const answerInfo = document.getElementById(`answerInfo`);
+            const correctReadings = [
+                currentAnswer[`RTH Read`],
+                currentAnswer[`TH Read`],
+                currentAnswer[`SH Freq Pinyin`]
+            ].filter(r => r);
+            const correctReading = correctReadings[0] || `N/A`;
+            const meaning = currentAnswer[`RTH Keyword`] || currentAnswer[`SH Freq Meaning`] || `N/A`;
+            answerInfo.innerHTML = `Skipped! Reading: <strong>` + correctReading + `</strong> | Meaning: <strong>` + meaning + `</strong>`;
+            answerInfo.style.display = `block`;
+            setTimeout(() => {
+                currentQuestionIndex++;
+                showQuestion();
+            }, 2000);
+        }
+        function showResults() {
+            const total = quizData.length;
+            const percentage = Math.round((correctAnswers / total) * 100);
+            document.getElementById(`quizScreen`).classList.remove(`active`);
+            document.getElementById(`resultsScreen`).classList.add(`active`);
+            document.getElementById(`scorePercent`).textContent = percentage + `%`;
+            document.getElementById(`correctCount`).textContent = correctAnswers;
+            document.getElementById(`incorrectCount`).textContent = incorrectAnswers;
+            document.getElementById(`skippedCount`).textContent = skippedAnswers;
+        }
+        function resetQuiz() {
+            document.getElementById(`resultsScreen`).classList.remove(`active`);
+            document.getElementById(`setupScreen`).classList.add(`active`);
+        }
+        document.addEventListener(`DOMContentLoaded`, () => {
+            document.getElementById(`answerInput`)?.addEventListener(`keypress`, (e) => {
+                if (e.key === `Enter`) checkAnswer();
+            });
+        });
+    </script>
+</body>
+</html>
