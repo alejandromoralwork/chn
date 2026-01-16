@@ -357,6 +357,19 @@
             const progress = ((currentQuestionIndex) / quizData.length) * 100;
             document.getElementById(`progressBar`).style.width = progress + `%`;
         }
+        function normalizePinyin(text) {
+            // Remove apostrophes and tone marks (ā á ǎ à ē é ě è ī í ǐ ì ō ó ǒ ò ū ú ǔ ù ǖ ǘ ǚ ǜ ü)
+            return text
+                .replace(/'/g, ``)
+                .replace(/[āáǎà]/g, `a`)
+                .replace(/[ēéěè]/g, `e`)
+                .replace(/[īíǐì]/g, `i`)
+                .replace(/[ōóǒò]/g, `o`)
+                .replace(/[ūúǔù]/g, `u`)
+                .replace(/[ǖǘǚǜü]/g, `u`)
+                .replace(/\d/g, ``); // Also remove numbers
+        }
+        
         function checkAnswer() {
             const userAnswer = document.getElementById(`answerInput`).value.trim().toLowerCase();
             if (!userAnswer) {
@@ -368,10 +381,13 @@
                 currentAnswer[`TH Read`],
                 currentAnswer[`SH Freq Pinyin`]
             ].filter(r => r).map(r => r.toLowerCase().trim());
-            const isCorrect = correctReadings.some(reading => 
-                reading === userAnswer || 
-                reading.replace(/\d/g, ``) === userAnswer.replace(/\d/g, ``)
-            );
+            
+            // Normalize both user answer and correct readings for comparison
+            const normalizedUserAnswer = normalizePinyin(userAnswer);
+            const isCorrect = correctReadings.some(reading => {
+                const normalizedReading = normalizePinyin(reading);
+                return normalizedReading === normalizedUserAnswer;
+            });
             const feedback = document.getElementById(`feedback`);
             const answerInfo = document.getElementById(`answerInfo`);
             if (isCorrect) {
