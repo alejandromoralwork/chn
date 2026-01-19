@@ -349,7 +349,7 @@
             const question = quizData[currentQuestionIndex];
             currentAnswer = question;
             document.getElementById(`currentQuestion`).textContent = currentQuestionIndex + 1;
-            document.getElementById(`hanziDisplay`).textContent = question.TH || question.SH || `?`;
+            document.getElementById(`hanziDisplay`).textContent = question.SH || question.TH || `?`;
             document.getElementById(`answerInput`).value = ``;
             document.getElementById(`feedback`).style.display = `none`;
             document.getElementById(`answerInfo`).style.display = `none`;
